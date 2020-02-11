@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings("ignore")
 import cv2, grpc
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 from tensorflow_serving.apis import predict_pb2
@@ -46,11 +48,11 @@ def detect_mask_single_image_using_grpc(image):
     anchors = np.broadcast_to(anchors, (images.shape[0],) + anchors.shape)
 
     request.inputs[saved_model_config.INPUT_IMAGE].CopyFrom(
-        tf.contrib.util.make_tensor_proto(molded_images, shape=molded_images.shape))
+        tf.make_tensor_proto(molded_images, shape=molded_images.shape))
     request.inputs[saved_model_config.INPUT_IMAGE_META].CopyFrom(
-        tf.contrib.util.make_tensor_proto(image_metas, shape=image_metas.shape))
+        tf.make_tensor_proto(image_metas, shape=image_metas.shape))
     request.inputs[saved_model_config.INPUT_ANCHORS].CopyFrom(
-        tf.contrib.util.make_tensor_proto(anchors, shape=anchors.shape))
+        tf.make_tensor_proto(anchors, shape=anchors.shape))
 
     result = stub.Predict(request, 60.)
     result_dict = preprocess_obj.result_to_dict(images, molded_images, windows, result)[0]
@@ -87,7 +89,6 @@ def detect_mask_single_image_using_restapi(image):
 
 def do_prediction(image_path):
     image = cv2.imread(settings.BASE_DIR+image_path)
-    img_name = os.path.basename(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     if image is None:
         print("Image path is not proper")
@@ -112,5 +113,6 @@ def do_prediction(image_path):
     infer_img = visualize.display_instances(image, r['rois'], r['mask'], r['class'],
                                     CLASS_NAMES, r['scores'],
                                     title="Predictions")
-    cv2.imwrite(settings.BASE_DIR+'/media/infer/'+img_name,cv2.cvtColor(infer_img, cv2.COLOR_BGR2RGB))
-    return 'infer/'+img_name, dict(zip(class_names[class_ids], area_occupation))
+    # cv2.imwrite(settings.BASE_DIR+'/media/infer/'+img_name,cv2.cvtColor(infer_img, cv2.COLOR_BGR2RGB))
+    cv2.imwrite(settings.BASE_DIR+image_path,cv2.cvtColor(infer_img, cv2.COLOR_BGR2RGB))
+    return dict(zip(class_names[class_ids], area_occupation))

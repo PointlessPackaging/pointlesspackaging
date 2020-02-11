@@ -156,4 +156,9 @@ chrome-user-data
 
 npm-debug.log*
 yarn-debug.log*
+<<<<<<< HEAD
 yarn-error.log*
+=======
+yarn-error.log*
+
+>>>>>>> 9fd950e... fixed setting.py

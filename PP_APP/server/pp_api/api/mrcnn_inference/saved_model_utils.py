@@ -1,3 +1,5 @@
+import warnings
+warnings.filterwarnings("ignore")
 import random
 import cv2
 import numpy as np
@@ -7,7 +9,6 @@ import skimage.color
 import skimage.transform
 import urllib.request
 import shutil
-import warnings
 
 
 COCO_MODEL_URL = "https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5"

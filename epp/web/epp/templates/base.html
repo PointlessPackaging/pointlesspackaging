@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ECS193-EPP</title>
+
+    {% include 'base/css.html' %}
+    {% include 'base/bootstrap_defaults.html' %}
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  </head>
+
+  <style>
+    body, html {
+        height: 100%;
+        width: 100%;
+        font-family: 'Poppins', sans-serif;
+        color: #222;
+        line-height: 1.8;
+    }
+    .navbar {
+        padding: .8rem;
+    }
+    .navbar-nav li {
+        padding-right: 20px;
+    }
+    .nav-link {
+        font-size: 1.1em !important;
+    }
+    .jumbotron {
+        background-color: white;
+        height: 10%;
+    }
+  </style>
+
+  <body>
+    <!-- Navigation Section -->
+    {% block navigation %}{% endblock navigation %}
+
+    <!-- DragDrop Section -->
+    <div class="container-fluid padding">
+
+      <form class="md-form">
+        <div class="file-field">
+          <div class="z-depth-1-half mb-4">
+          <img src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg" class="img-fluid"
+          alt="example placeholder">
+          </div>
+        </div>
+      </form>
+
+      <div class="d-flex justify-content-center">
+          <div class="btn btn-mdb-color btn-rounded float-left">
+          <span></span>
+          <input type="file">
+          </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="jumbotron jumbotron-fluid">
+    {% block indent %}{% endblock indent %}
+    </div>
+
+    {% block charts %}{% endblock charts %}
+
+    {% include 'base/js.html' %}
+    <script>
+    $(document).ready(function(){
+      {% block jquery %}{% endblock %}
+    })
+    </script>
+
+    <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4"></h1>
+      <p class="lead"></p>
+    </div>
+    </div>
+
+  </body>
+
+</html>
