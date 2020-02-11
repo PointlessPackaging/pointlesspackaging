@@ -1,0 +1,7 @@
+{% extends "pp_api/base.html" %}
+{% block content %}
+    {% for post in posts %}
+        <img class="rounded-circle" src="{{ post.author.profile.image.url }}">
+        <h1>{{ post.author.username }}</h1>
+    {% endfor %}
+{% endblock content %}

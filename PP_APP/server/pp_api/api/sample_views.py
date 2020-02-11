@@ -7,14 +7,15 @@ from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
 
 from pp_api.models import (
-    hello_rest, 
-    )
+    hello_rest,
+)
 
 from pp_api.api.serializers import (
-    hello_rest_serializer, 
+    hello_rest_serializer,
 )
 
 from accounts.models import Account
+
 
 ################### HELLO REST ###################
 
@@ -25,11 +26,12 @@ def get_hello_rest(request):
     try:
         hello_model = hello_rest.objects.all()
     except hello_rest.DoesNotExist:
-        return Response({"response":"Data not found."})
+        return Response({"response": "Data not found."})
 
     if request.method == "GET":
         serializer = hello_rest_serializer(hello_model, many=True)
         return Response(serializer.data)
+
 
 # UPDATE
 @api_view(['PUT'])
@@ -43,11 +45,12 @@ def update_hello_rest(request):
     if request.method == 'PUT':
         serializer = hello_rest_serializer(hello_model, data=request.data)
         data = {}
-        if serializer.is_valid(): # very similar to a Django form
+        if serializer.is_valid():  # very similar to a Django form
             serializer.save()
             data["status"] = "Update successful!"
             return Response(data=data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # DELETE
 @api_view(['DELETE'])
@@ -67,6 +70,7 @@ def delete_hello_rest(request):
         data['status'] = "Operation not successful."
         return Response(data=data)
 
+
 # CREATE
 @api_view(['POST'])
 @permission_classes(())
@@ -78,4 +82,4 @@ def create_hello_rest(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response({'status':'Unable to create hello_rest.'}) 
+        return Response({'status': 'Unable to create hello_rest.'})
