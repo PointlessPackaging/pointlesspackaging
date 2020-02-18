@@ -4,8 +4,6 @@ This program reads the command line argument and makes a call to the Google
 Vision API. After that, it does some analysis on the image content.
 '''
 
-import argparse
-
 import io
 import os
 
@@ -25,20 +23,6 @@ labels = {
     'object_localization': types.Feature.OBJECT_LOCALIZATION,
     'web_detection': types.Feature.WEB_DETECTION
 }
-
-
-def run_parser():
-    '''
-    Sets up the command line argument parser and retreives arg from command
-    line.
-    '''
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--file', required=True, help='absolute path to the \
-        image file', dest='file')
-
-    args = parser.parse_args()
-
-    return args
 
 def load_image(file_name):
     '''
@@ -129,19 +113,3 @@ def call_Vision_API(image_path, requested_features):
     result = client.annotate_image(request)
 
     return result
-
-def main():
-    '''
-    Driver function.
-    '''
-    # get the command line arguments
-    args = run_parser()
-
-    # The name of the image file to annotate
-    file_name = args.file
-
-    check_plastic(file_name)
-
-
-if __name__== "__main__":
-  main()
