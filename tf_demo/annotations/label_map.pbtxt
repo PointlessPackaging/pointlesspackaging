@@ -1,0 +1,14 @@
+item {
+    id: 1
+    name: 'outerbox'
+}
+
+item {
+    id: 2
+    name: 'innerbox'
+}
+
+item {
+    id: 3
+    name: 'product'
+}
