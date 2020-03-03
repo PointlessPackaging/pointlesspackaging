@@ -24,6 +24,7 @@ labels = {
     'web_detection': types.Feature.WEB_DETECTION
 }
 
+top_retailers = ['Amazon', 'Apple', 'Dell', 'Walmart', 'Target', 'Autozone']
 def load_image(file_name):
     '''
     Loads a local images into a Google Vision Image type.
@@ -70,6 +71,7 @@ def check_plastic(image_path):
         return False
 
     for label in result.label_annotations:
+        label = label.description
         if 'Plastic' in label or 'plastic' in label:
             return True
 
@@ -113,3 +115,54 @@ def call_Vision_API(image_path, requested_features):
     result = client.annotate_image(request)
 
     return result
+
+def logo_OCR(image_path):
+    '''
+    Attempts to identify the retailer based on text detection.
+    Arguments:
+        - image_path: path to image
+
+    Returns: String with retailer name if retailer found. NoneType if none is
+    found.
+    '''
+    # try to run logo detection
+    api_result = call_Vision_API(image_path, ['text_detection'])
+
+    if not api_result.text_annotations:
+        return None
+
+    for annotation in api_result.text_annotations:
+        # extract string
+        text = annotation.description
+        # remove formatting
+        text = text.lower()
+        text = text.replace(' ', '')
+
+        for retailer in top_retailers:
+            if retailer.lower() in text:
+                return retailer
+
+    return None
+
+
+def find_retailer(image_path):
+    '''
+    Calls the Google Vision API logo detection and tries to find retailer.
+    Arguments:
+        - image_path: path to image
+
+    Returns: String with retailer name if retailer found. NoneType if none is
+    found.
+    '''
+    # try to run logo detection
+    api_result = call_Vision_API(image_path, ['logo_detection'])
+
+    # logo could not be found, try OCR
+    if not api_result.logo_annotations:
+        return logo_OCR(image_path)
+
+    for annotation in api_result.logo_annotations:
+        if annotation.score > 0.8:
+            return annotation.description
+
+    return logo_OCR(image_path)
