@@ -25,6 +25,7 @@ labels = {
 }
 
 top_retailers = ['Amazon', 'Apple', 'Dell', 'Walmart', 'Target', 'Autozone']
+
 def load_image(file_name):
     '''
     Loads a local images into a Google Vision Image type.
@@ -43,38 +44,6 @@ def load_image(file_name):
 
     return image
 
-def check_plastic(image_path):
-    '''
-    Calls the Google Vision label detection and checks if plastic has been
-    found.
-    Arguments:
-        - image_path: path to image
-
-    Returns: True if plastic is present in image, False if plastic is not
-        present.
-    '''
-    image = load_image(image_path)
-
-    # Instantiates a client
-    client = vision.ImageAnnotatorClient()
-
-    label_detection = types.Feature(type=types.Feature.LABEL_DETECTION, \
-                max_results=10)
-
-
-    request = types.AnnotateImageRequest(image=image, \
-                    features=[label_detection])
-
-    result = client.annotate_image(request)
-
-    if not result.label_annotations:
-        return False
-
-    for label in result.label_annotations:
-        label = label.description
-        if 'Plastic' in label or 'plastic' in label:
-            return True
-
 def call_Vision_API(image_path, requested_features):
     '''
     Wrapper around the Google Vision API. Enables calling it in one line
@@ -83,7 +52,7 @@ def call_Vision_API(image_path, requested_features):
         - image_path: path to image
         - requested_features: array of strings with features requested.
 
-    Returns: AnnotateImageResponse
+    Returns: AnnotateImageResponse. Check the README for more info on this type.
     '''
     assert isinstance(image_path, str), 'image_path should be a string.'
     assert isinstance(requested_features, list), 'requested_features should be \
@@ -116,6 +85,29 @@ def call_Vision_API(image_path, requested_features):
 
     return result
 
+def check_plastic(image_path):
+    '''
+    Calls the Google Vision label detection and checks if plastic has been
+    found.
+    Arguments:
+        - image_path: path to image
+
+    Returns: True if plastic is present in image, False if plastic is not
+        present.
+    '''
+    api_result = call_Vision_API(image_path, ['label_detection'])
+
+    if not api_result.label_annotations:
+        return False
+
+    for label in api_result.label_annotations:
+        label = label.description
+        label = label.lower()
+        if 'plastic' in label:
+            return True
+
+    return False
+
 def logo_OCR(image_path):
     '''
     Attempts to identify the retailer based on text detection.
@@ -143,7 +135,6 @@ def logo_OCR(image_path):
                 return retailer
 
     return None
-
 
 def find_retailer(image_path):
     '''
