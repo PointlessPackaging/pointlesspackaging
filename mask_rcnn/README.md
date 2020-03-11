@@ -30,8 +30,9 @@ DIRECTORY STRUCTURE
                 containing pointless packaging.
 ```
 
-- Download trained model and place it in the `models/` directory.
+- Download the latest trained model and place it in the `models/` directory.
     - ### <a href="https://drive.google.com/a/ucdavis.edu/file/d/1b82OoKjJksEZ0JZfZS4Y8DPK5VkSDVtp/view?usp=sharing" target="blank">CLICK HERE TO DOWNLOAD TRAINED MODEL</a>
+    - The model was trained for oly 50 epochs on 150 training images and 32 test images.
 
 
 ## score.py
@@ -67,3 +68,6 @@ optional arguments:
 - Need to come up with a proper scoring function. 
   Currently, `score.py` gives only the area of the 
   box and items in pixels.
+
+## RESULTS:
+![Results](dataset/val_img_results/Figure_1.png)
