@@ -1,0 +1,45 @@
+.button-big{
+	height: 100px;
+	width: 200px;
+	border-radius: 12px;
+}
+
+.footer {
+	padding: 2.5rem 0;
+	color: #999;
+	text-align: left;
+	background-color: #28e5d; // indigo
+	border-top: .05rem solid #e5e5e5;
+}
+
+.header {
+	padding: 15pt;
+}
+
+.logo-img {
+	padding: 5pt;
+	object-fit: cover;
+	height: 55px;
+}
+
+.or-table{
+	color: #000;
+}
+
+.pack-img {
+	padding: 5pt;
+	object-fit: cover;
+	height: 100px;
+	width: 100%;
+}
+
+.para {
+	font-size: 20px;
+}
+
+.scroll-table{
+	display: block; 
+	position: relative;
+	height: 800px;
+	overflow: auto;"
+}
