@@ -1,0 +1,31 @@
+.button-big{
+	height: 100px;
+	width: 200px;
+	border-radius: 12px;
+}
+
+.footer {
+	background-color: blue;
+	padding: 2.5rem 0;
+	color: #999;
+	text-align: left;
+	background-color: #f9f9f9;
+	border-top: .05rem solid #e5e5e5;
+}
+
+.header {
+	padding: 15pt;
+}
+
+.logo-img {
+	padding: 5pt;
+	object-fit: cover;
+	height: 55px;
+}
+
+.pack-img {
+	padding: 5pt;
+	object-fit: cover;
+	height: 100px;
+	width: 100%;
+}
