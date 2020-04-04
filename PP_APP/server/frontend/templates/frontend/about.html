@@ -1,0 +1,40 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container-fluid p-3" style="background-image: url('../../static/css/images/background/green_background.jpg')">
+    <div class="container">
+      <p class="para p-5">
+        Large online retailers ship millions of packages each day, and often these
+        products are shipped in packaging that is both wasteful and harmful. The
+        packaging is often excessive and containing nonbiodegradable materials such
+        as plastic. The environment pays the price, our oceans, air quality, and
+        environment are all impacted. The aim of this project is to draw attention
+        to these practices. We created a system, which uses images to automatically
+        detect oversized shipping boxes and harmful materials. Our method uses computer
+        vision techniques to analyze the images and calculate a packaging grade.
+        With the results our algorithm returned we could present the companies who
+        used the most efficient packaging, informing people who the most efficient
+        packagers are. Hopefully, this can lead to packaging practices being changed
+        for the better.
+      </p>
+
+      <p class="para p-5">
+        Pointless packaging is a project developed by engineering students at UC Davis.
+        We chose this project to explore some of the interesting subjects of computer
+        science such as computer vision and machine learning, while also having
+        a positive impact.
+      </p>
+
+      <p class="para p-5"> Our engineering design showcase youtube video will go here, but for the meantime
+      	enjoy Yoosuf.
+      </p>
+    </div>
+  </div>
+
+  <div class="container p-5 video-cont">
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe src="https://www.youtube.com/embed/PUzpwOkY0h8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+{% endblock content %}
