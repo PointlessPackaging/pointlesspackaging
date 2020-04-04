@@ -61,7 +61,13 @@ class PredictedImagePostAdmin(admin.ModelAdmin):
     fieldsets = ()
 
 #These register the models with the admin classes.
+<<<<<<< HEAD
 admin.site.register(Packager, PackagerAdmin)
 admin.site.register(PPUsers, PPUsersAdmin)
 admin.site.register(ImagePost, ImagePostAdmin)
 admin.site.register(PredictedImagePost, PredictedImagePostAdmin)
+=======
+#admin.site.register(hello_rest)
+admin.site.register(image_post)
+admin.site.register(image_post_predicted)
+>>>>>>> 6f72ecb... This is the beginning of the design of the website, with styling and a designed layout.
