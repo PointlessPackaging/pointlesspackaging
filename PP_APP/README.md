@@ -18,10 +18,12 @@ The API should be running!
 Goto admin page: http://localhost:8000/admin/ and login to have control.
 
 Use POSTMAN to make UNAUTHENTICATED requests:
+
 1. http://localhost:8000/api/create_hello - append to body `name` and `msg` field and make a `POST` request.
 2. http://localhost:8000/api/get_hello - make a `GET` request, this will query everything in the database table `hello_rest`.
 
 Use POSTMAN to make AUTHENTICATED requests:
+
 0. Register a user by making a `POST` request. 
     - enter http://localhost:8000/accounts/register into the URL field. 
     - Click on 'Body' below the URL field. The `key`s are `email`, `username`, `password`, `password2`. Enter `value`s of your choice. And press 'Send'.
