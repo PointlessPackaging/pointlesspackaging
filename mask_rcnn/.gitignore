@@ -2,6 +2,7 @@ __pycache__/
 .vscode/
 .idea/
 *.h5
+*.pb
 **/dataset/train/
 **/dataset/val/
 **/mask_rcnn/logs/
