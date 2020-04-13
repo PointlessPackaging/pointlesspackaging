@@ -1,0 +1,19 @@
+<h1>Google Cloud Platform - Retailer Detection</h1>
+
+<p>This Python Flask application demonstrates the retailer detection feature
+  of the pointless packaging project. The UI is minimal because we are
+  focusing on deploying our back end infrastructure.</p>
+
+<br>
+
+<html>
+  <body>
+    <form id="form", method="post", enctype="multipart/form-data">
+      Upload File: <input type="file" name="file" id="file"><br>
+    </form>
+    <button type="button" id="submitBtn">Submit!</button><br>
+    <p id="retailer_name"></p>
+  </body>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="{{ url_for('static', filename="js/app.js")}}"></script>
+</html>
