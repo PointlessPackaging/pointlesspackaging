@@ -1,5 +1,6 @@
 # Your Inference Config Class
 # Replace your own config
+from django.conf import settings
 # MY_INFERENCE_CONFIG = YOUR_CONFIG_CLASS
 # import coco
 # class InferenceConfig(coco.CocoConfig):
@@ -25,8 +26,8 @@ MY_INFERENCE_CONFIG = PPConfig()
 
 
 # Tensorflow Model server variable
-ADDRESS = 'localhost'
-PORT_NO_GRPC = 8500
+ADDRESS = settings.MASK_RCNN_API_IP
+PORT_NO_GRPC = settings.MASK_RCNN_API_PORT
 PORT_NO_RESTAPI = 8501
 MODEL_NAME = 'mask'
 REST_API_URL = "http://%s:%s/v1/models/%s:predict" % (ADDRESS, PORT_NO_RESTAPI, MODEL_NAME)

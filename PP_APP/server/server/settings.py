@@ -17,6 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 GOOGLE_APPLICATION_CREDENTIALS = 'google-vision.json'
+MASK_RCNN_API_IP = '34.82.43.176'
+MASK_RCNN_API_PORT = 8500
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -27,7 +29,8 @@ SECRET_KEY = 'y-x48uld(-ko4z*pwe#)t$14rjn+m=1!xh#q4mxg2d32&4_-1c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['pointlesspackaging.space']
 
 
 # Application definition
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'django_cleanup',
     'pp_api',
     'accounts',
+    'frontend'
 ]
 
 REST_FRAMEWORK = {
@@ -55,7 +59,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 1
+    'PAGE_SIZE': 10
 }
 
 MIDDLEWARE = [
@@ -74,7 +78,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['frontend/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,5 +144,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATICFILES_DIRS = [
+    'frontend/static',
+]
 
 STATIC_URL = '/static/'
