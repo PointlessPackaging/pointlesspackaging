@@ -14,7 +14,7 @@ from accounts.models import Account
 
 # CREATE
 @api_view(['POST'])
-@permission_classes(())
+@permission_classes((IsAuthenticated,))
 def registration_view(request):
 
     serializer = RegistrationSerializer(data=request.data)

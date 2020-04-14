@@ -8,9 +8,10 @@ from resizeimage import resizeimage
 
 # Create your models here.
 
-class hello_rest(models.Model):
-    name = models.CharField(max_length=20, null=False, blank=False)
-    msg = models.CharField(max_length=250, null=False, blank=False)
+""" Django basic reference model """
+# class hello_rest(models.Model):
+#     name = models.CharField(max_length=20, null=False, blank=False)
+#     msg = models.CharField(max_length=250, null=False, blank=False)
 
 def upload_top_location(instance, filename):
     return 'top/{author_id}/{filename}'.format(author_id=str(instance.user_id.id), filename=filename)

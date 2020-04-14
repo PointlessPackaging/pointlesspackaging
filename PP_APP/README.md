@@ -48,6 +48,9 @@ Use POSTMAN to make AUTHENTICATED requests:
 3. The tokens for each user can also be found here:
     - http://localhost:8000/admin/authtoken/token/
 
+## Credit:
+- (For code used in M-RCNN inference part of this app) https://github.com/bendangnuksung/mrcnn_serving_ready
+
 ## Some sources:
 - https://docs.djangoproject.com/en/3.0/
 - (Making DB queries) https://docs.djangoproject.com/en/3.0/topics/db/queries/
