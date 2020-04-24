@@ -26,3 +26,10 @@ which is a True/False value.
 ## Example usage
 Check `static/js/app.js` for example on using
 the API from JavaScript.
+
+## Deployment
+The API is deployed on the following Google Cloud instance:
+`https://smallwebsite.nw.r.appspot.com/`. To invoked the API, simply make an
+HTTP call to `https://smallwebsite.nw.r.appspot.com/find_retailer` or
+`https://smallwebsite.nw.r.appspot.com/check_plastic` with the parameters
+described in the API description heading above.
