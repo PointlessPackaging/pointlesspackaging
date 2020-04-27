@@ -1,16 +1,16 @@
 from rest_framework import serializers
 
 from pp_api.models import (
-    hello_rest,
+    #hello_rest,
     image_post,
     image_post_predicted,
 )
 
 class hello_rest_serializer(serializers.ModelSerializer):
     class Meta:
-        model = hello_rest
+        #model = hello_rest
         fields = '__all__'
-        
+
 class ImagePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = image_post_predicted
