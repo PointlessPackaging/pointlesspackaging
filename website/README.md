@@ -1,3 +1,13 @@
+This is the source files for the website design. To really run the website, go to 
+*PP_APP* and follow those instructions.
+
+# Reference
+
+*main.css* is a compiled *.css* file containing all of the bootstrap classes with 
+some modifications that I added. The modifications can be found in *main.scss*.
+
+*style.css* contains classes I created that were **NOT** based on *Bootstrap*.
+
 Drag and drop *image_drop.html* into your browser and you can interact with the 
 rest of the web pages through there. 
 

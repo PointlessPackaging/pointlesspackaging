@@ -1,5 +1,8 @@
-# HOW TO SETUP AND RUN THE API FOR THE FIRST TIME
+[Yoosuf][#yoosuf]
 
+<a name="yoosuf"/>
+
+# HOW TO SETUP AND RUN THE API FOR THE FIRST TIME
 
 1. Open up the terminal in this directory and `cd server`
 2. `python manage.py makemigrations`
