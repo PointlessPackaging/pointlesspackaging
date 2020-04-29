@@ -1,0 +1,41 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid p-3" style="background-image: url('../../static/css/images/background/green_background.jpg')">
+  <div class="container p-5">
+      <div class="row align-items-center">
+          <div class="col justify-content-center">
+              <h1>Success! Thank you for your submission</h1>
+          </div>
+      </div>
+
+      <div class="row py-lg-5">
+          <div class="col text-center">
+              <img src="../../static/css/images/packaging/Figure_1.png" class="p-3">
+              <h2 class="p-2">Your image's score is 5.5/10</h2>
+              <p>Box ratio: 4:10</p>
+              <p>Plastic content: high</p>
+              <p>Vendor: The Aggie</p>
+          </div>
+      </div>
+
+      <!---
+      <div class="row py-lg-5 justify-content-md-center">
+          <div class = "col-md-auto">
+              <button class="btn btn-primary" onclick="goto_image()">
+                  Submit another image
+              </button>
+          </div>
+
+          <div class="col-md-auto">
+              <button class="btn btn-primary" onclick="other_images()">
+                  View other images
+              </button>
+          </div>
+      </div>
+      -->
+    </div>
+</div>
+
+{% endblock content %}
