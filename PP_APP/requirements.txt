@@ -57,14 +57,9 @@ termcolor==1.1.0
 toml==0.10.0
 typed-ast==1.4.1
 urllib3==1.25.8
-<<<<<<< HEAD
-opencv-python==4.2.0.34
-tensorflow-serving-api==2.1.0
-scikit-image==0.16.2
-python-resize-image==1.1.19
-django-cleanup==4.0.0
-
-=======
 Werkzeug==1.0.1
 wrapt==1.12.1
->>>>>>> 68370ef... - Reorganized models and improved their naming schemes.
+# opencv-python==4.2.0.34
+# tensorflow-serving-api==2.1.0
+# python-resize-image==1.1.19
+# django-cleanup==4.0.0

@@ -28,16 +28,10 @@ class Migration(migrations.Migration):
             name='Packager',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-<<<<<<< HEAD
-                ('top_img', models.ImageField(upload_to=pp_api.models.top_img_path)),
-                ('side_img', models.ImageField(upload_to=pp_api.models.side_img_path)),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-=======
                 ('name', models.CharField(max_length=50, unique=True)),
                 ('display_name', models.CharField(default='-1', max_length=50)),
                 ('count', models.IntegerField()),
                 ('score', models.DecimalField(decimal_places=1, max_digits=2)),
->>>>>>> 68370ef... - Reorganized models and improved their naming schemes.
             ],
         ),
         migrations.CreateModel(

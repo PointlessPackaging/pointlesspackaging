@@ -6,17 +6,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
-<<<<<<< HEAD
-from accounts.models import Account
-from pp_api.api.mrcnn_inference.saved_model_inference import do_prediction
-from pp_api.models import (
-    image_post,
-    image_post_predicted,
-    Post,
-    PredictedPost,
-    Packager,
-)
-=======
 from django.contrib.auth.models import BaseUserManager
 from django.core.validators import validate_email
 import random
@@ -28,7 +17,6 @@ from pp_api.models import (
     PredictedImagePost,
     )
 
->>>>>>> 68370ef... - Reorganized models and improved their naming schemes.
 from pp_api.api.serializers import (
     PPUsersSerializer,
     PackagerSerializer,
@@ -68,27 +56,6 @@ class ChartData(APIView):
 # @permission_classes((IsAuthenticated,))
 @permission_classes(())
 def upload_imgs(request):
-<<<<<<< HEAD
-    # upload_model = image_post(user_id=request.user)
-    upload_model = image_post(user_id=Account.objects.get(pk=2))
-    serializer = UploadSerializer(upload_model, data=request.data)
-    data = {}
-    if serializer.is_valid():
-        ret_img_inst = serializer.save()
-        post_id = ret_img_inst.id
-        prediction_img, prediction_area = do_prediction(serializer.data.get('top_img'))
-        # try:
-        #     prediction_img, prediction_area = do_prediction(serializer.data.get('top_img'))
-        # except:
-        #     print("DEBUG: in except")
-        # if ret_img_inst.delete():
-        #     print(ret_img_inst.delete())
-        #     print("what is returning3?")
-        #     return Response({'response': 'upload failed, uploads deleted.'}, status=status.HTTP_400_BAD_REQUEST)
-        # else:
-        #     print("what is returning4?")
-        #     return Response({'response': 'upload failed, uploads NOT deleted.'}, status=status.HTTP_400_BAD_REQUEST)
-=======
     # upload_model = ImagePost(user_id=request.user)
 
     """ Check if the email address is valid """
@@ -150,8 +117,7 @@ def upload_imgs(request):
             if ret_img_inst.delete():
                 return Response({'response':'upload failed, uploads deleted.'}, status=status.HTTP_400_BAD_REQUEST) 
             else:
-                return Response({'response':'upload failed, uploads NOT deleted.'}, status=status.HTTP_400_BAD_REQUEST) 
->>>>>>> 68370ef... - Reorganized models and improved their naming schemes.
+                return Response({'response':'upload failed, uploads NOT deleted.'}, status=status.HTTP_400_BAD_REQUEST)
 
         """ Save the reponse from the Mask R-CNN API """
         predict_model = PredictedImagePost(img_post_id=ret_img_inst, packager=packager_inst)
@@ -160,12 +126,6 @@ def upload_imgs(request):
         predict_model.item_size = prediction_area.get('item')
         predict_model.save()
 
-<<<<<<< HEAD
-        serializer2 = ImagePostSerializer(predict_model)
-        return Response({'response': serializer2.data}, status=status.HTTP_200_OK)
-    return Response({'response': 'upload failed.'}, status=status.HTTP_400_BAD_REQUEST)
-
-=======
         """ Send response back to the client """
         serializer = ImagePostSerializer(predict_model)
         data={  'post_id': serializer.data.get('img_post_id'),
@@ -178,8 +138,7 @@ def upload_imgs(request):
             }
 
         return Response({'response':data}, status=status.HTTP_200_OK)
-    return Response({'response':'upload failed.'}, status=status.HTTP_400_BAD_REQUEST) 
->>>>>>> 68370ef... - Reorganized models and improved their naming schemes.
+    return Response({'response':'upload failed.'}, status=status.HTTP_400_BAD_REQUEST)
 
 # DELETE IMAGE POST
 @api_view(['DELETE'])
