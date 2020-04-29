@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+from django.utils import timezone
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
@@ -9,26 +9,33 @@ from resizeimage import resizeimage
 # Create your models here.
 
 """ Django basic reference model """
-# class hello_rest(models.Model):
-#     name = models.CharField(max_length=20, null=False, blank=False)
-#     msg = models.CharField(max_length=250, null=False, blank=False)
+def top_img_path(instance, filename):
+    return 'top/{0}/{1}'.format(instance.user_id.id, filename)
 
-def upload_top_location(instance, filename):
-    return 'top/{author_id}/{filename}'.format(author_id=str(instance.user_id.id), filename=filename)
+def side_img_path(instance, filename):
+    return 'side/{0}/{1}'.format(instance.user_id.id, filename)
 
-def upload_side_location(instance, filename):
-    return 'side/{author_id}/{filename}'.format(author_id=str(instance.user_id.id), filename=filename)
+def infer_img_path(instance, filename):
+    return 'infer/{0}/{1}'.format(instance.user_id.id, filename)
 
-def upload_infer_location(instance, filename):
-    return 'infer/{author_id}/{filename}'.format(author_id=str(instance.user_id.id), filename=filename)
+class PPUsers(models.Model):
+    email=models.EmailField(verbose_name="email", max_length=60, unique=True)
 
-class image_post(models.Model):
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    top_img = models.ImageField(upload_to=upload_top_location, null=False,blank=False)
-    side_img = models.ImageField(upload_to=upload_side_location, null=False,blank=False)
+class Packager(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    display_name = models.CharField(max_length=50, default="-1")
+    count = models.IntegerField()
+    score = models.DecimalField(max_digits=2, decimal_places=1)
+
+class ImagePost(models.Model):
+    user_id = models.ForeignKey(PPUsers, on_delete=models.CASCADE)
+    top_img = models.ImageField(upload_to=top_img_path, null=False,blank=False)
+    side_img = models.ImageField(upload_to=side_img_path, null=False,blank=False)
+    infer_img = models.ImageField(upload_to=infer_img_path, null=True,blank=True)
+    date_posted = models.DateTimeField(default=timezone.now)
 
     def create(self, validated_data):
-        return image_post(**validated_data)
+        return ImagePost(**validated_data)
 
     ## https://stackoverflow.com/questions/30434323/django-resize-image-before-upload
     def save(self, *args, **kwargs):
@@ -62,13 +69,13 @@ class image_post(models.Model):
                 save=False
             )
 
-        super(image_post, self).save(*args, **kwargs)
+        super(ImagePost, self).save(*args, **kwargs)
 
-class image_post_predicted(models.Model):
-    img_post_id = models.ForeignKey(image_post, on_delete=models.CASCADE)
-    packager = models.CharField(max_length=30, null=True, blank=True)
+class PredictedImagePost(models.Model):
+    img_post_id = models.ForeignKey(ImagePost, on_delete=models.CASCADE)
+    packager = models.ForeignKey(Packager, on_delete=models.CASCADE, blank=True, null=True)
+    materials = models.CharField(max_length=100, blank=True, null=True)
     score = models.DecimalField(max_digits=2, decimal_places=1,blank=True, null=True)
-    infer_img = models.ImageField(null=True,blank=True)
-    outerbox = models.IntegerField(null=True,blank=True)
-    innerbox = models.IntegerField(null=True,blank=True)
-    item = models.IntegerField(null=True,blank=True)
+    outer_size = models.IntegerField(null=True,blank=True)
+    inner_size = models.IntegerField(null=True,blank=True)
+    item_size = models.IntegerField(null=True,blank=True)

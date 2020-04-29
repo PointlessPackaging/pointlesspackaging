@@ -17,7 +17,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 GOOGLE_APPLICATION_CREDENTIALS = 'google-vision.json'
-MASK_RCNN_API_IP = '34.82.43.176'
+# MASK_RCNN_API_IP = '34.82.43.176' # M-RCNN API CLOUD
+MASK_RCNN_API_IP = '0.0.0.0' # M-RCNN RUNNING LOCAL
 MASK_RCNN_API_PORT = 8500
 
 # Quick-start development settings - unsuitable for production
