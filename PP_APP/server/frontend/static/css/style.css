@@ -33,6 +33,12 @@
 
 }
 
+.logo-img {
+	padding: 5pt;
+	object-fit: cover;
+	height: 55px;
+}
+
 .para {
 	font-size: 16pt;
 }
