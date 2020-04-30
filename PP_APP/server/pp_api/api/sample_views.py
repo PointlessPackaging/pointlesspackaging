@@ -69,7 +69,7 @@ def delete_hello_rest(request):
 
 # CREATE
 @api_view(['POST'])
-@permission_classes(())
+@permission_classes((IsAuthenticated,))
 def create_hello_rest(request):
     hello_model = hello_rest()
     if request.method == 'POST':

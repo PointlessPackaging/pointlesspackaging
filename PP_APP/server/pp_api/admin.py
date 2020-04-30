@@ -19,8 +19,8 @@ class PPUsersAdmin(admin.ModelAdmin):
     fieldsets = ()
 
 class PackagerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'display_name', 'count', 'score')
-    search_fields = ('name', 'display_name', 'count', 'score')
+    list_display = ('name', 'brand_name', 'count', 'score')
+    search_fields = ('name', 'brand_name', 'count', 'score')
     readonly_fields = ()
     
     filter_horizontal = ()
@@ -43,17 +43,17 @@ class ImagePostAdmin(admin.ModelAdmin):
 
 class PredictedImagePostAdmin(admin.ModelAdmin):
     def get_name(self, obj):
-        return obj.packager.display_name
+        return obj.packager.brand_name
     get_name.admin_order_field  = 'packager'  #Allows column order sorting
     get_name.short_description = 'Packager Name'  #Renames column head
 
     def get_username(self, obj):
-        return obj.img_post_id.user_id.email
-    get_username.admin_order_field  = 'img_post_id'  #Allows column order sorting
+        return obj.img_post.user_id.email
+    get_username.admin_order_field  = 'img_post'  #Allows column order sorting
     get_username.short_description = 'User'  #Renames column head
 
-    list_display = ('img_post_id', 'get_username', 'get_name','materials','score','outer_size','inner_size','item_size')
-    search_fields = ('img_post_id__user_id__email', 'packager__name','materials','score','outer_size','inner_size','item_size')
+    list_display = ('img_post', 'get_username', 'get_name','materials','score','outer_size','inner_size','item_size')
+    search_fields = ('img_post__user_id__email', 'packager__brand_name','materials','score','outer_size','inner_size','item_size')
     readonly_fields = ()
     
     filter_horizontal = ()

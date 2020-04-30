@@ -23,9 +23,9 @@ class PPUsers(models.Model):
 
 class Packager(models.Model):
     name = models.CharField(max_length=50, unique=True)
-    display_name = models.CharField(max_length=50, default="-1")
+    brand_name = models.CharField(max_length=50, default="-1")
     count = models.IntegerField()
-    score = models.DecimalField(max_digits=2, decimal_places=1)
+    score = models.FloatField()
 
 class ImagePost(models.Model):
     user_id = models.ForeignKey(PPUsers, on_delete=models.CASCADE)
@@ -72,10 +72,10 @@ class ImagePost(models.Model):
         super(ImagePost, self).save(*args, **kwargs)
 
 class PredictedImagePost(models.Model):
-    img_post_id = models.ForeignKey(ImagePost, on_delete=models.CASCADE)
+    img_post = models.ForeignKey(ImagePost, on_delete=models.CASCADE)
     packager = models.ForeignKey(Packager, on_delete=models.CASCADE, blank=True, null=True)
     materials = models.CharField(max_length=100, blank=True, null=True)
-    score = models.DecimalField(max_digits=2, decimal_places=1,blank=True, null=True)
+    score = models.FloatField(blank=True, null=True)
     outer_size = models.IntegerField(null=True,blank=True)
     inner_size = models.IntegerField(null=True,blank=True)
     item_size = models.IntegerField(null=True,blank=True)
