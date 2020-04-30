@@ -9,8 +9,6 @@ $(document).ready(function () {
         //stop submit the form, we will post it manually.
         event.preventDefault();
 
-        // var dumb_ob = JSON.parse('{ "response": { "img_post_id": 23, "packager": "DummyBrand", "infer_img": "/media/infer/Image_from_iOS.jpg", "outer_size": 30344, "inner_size": 11739, "item_size": null }}')
-        // alert(dumb_ob.response.infer_img)
         // Get form
         var form = $('#fileUploadForm')[0];
 
@@ -64,7 +62,9 @@ $(document).ready(function () {
                 $("#item_size").text(data.response.item_size)
                 let elapsed = Math.floor(((new Date().getTime() - now) % (1000 * 60)) / 1000)
                 $("#time_elapsed").text(elapsed)
+                email_val = user_email.value
                 document.getElementById("imageUploadForm").reset();
+                user_email.setAttribute('value', email_val)
                 $('#top_img').next('.custom-file-label').html("Choose file...");
                 $('#side_img').next('.custom-file-label').html("Choose file...");
 

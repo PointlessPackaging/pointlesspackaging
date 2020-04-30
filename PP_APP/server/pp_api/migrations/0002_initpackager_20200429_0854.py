@@ -12,7 +12,7 @@ def add_packager_data(apps, schema_editor):
     for brand in BRANDS:
         packager=Packager(
             name=brand.strip().replace(" ", "").lower(),
-            display_name=brand,
+            brand_name=brand,
             count=random.choice(range(500, 1000)),
             score=random.uniform(5,10)
         )
