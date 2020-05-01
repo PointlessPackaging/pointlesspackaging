@@ -1,7 +1,8 @@
 '''
 This Flask server serves the image_analyzer library which wraps the Google
-Vision API and identifies the retailer and checks for plastic content.
-''''
+Vision API and identifies the retailer, checks for plastic content, and finds
+all materials in the returned labels.
+'''
 
 from datetime import datetime
 import logging
@@ -44,6 +45,34 @@ def check_plastic():
 
     has_plastic = ia.check_plastic(photo)
     response = {'has_plastic' : has_plastic}
+
+    return jsonify(response), 200
+
+@app.route('/find_materials', methods=['GET', 'POST'])
+def find_materials():
+    try:
+        photo = request.files['side_view'].read()
+    except:
+        return {'error' : "bad side_view file"}, 400
+
+    returned_materials = ia.find_materials(photo)
+
+    response = {
+        'has_plastic' : False,
+        'has_paper' : False,
+        'has_carton' : False,
+        'has_cardboard' : False
+    }
+
+    for material in returned_materials:
+        if material is 'plastic':
+            response['has_plastic'] = True
+        elif material is 'paper':
+            response['has_paper'] = True
+        elif material is 'carton':
+            response['has_carton'] = True
+        elif material is 'cardboard':
+            response['has_cardboard'] = True
 
     return jsonify(response), 200
 
