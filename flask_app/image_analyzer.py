@@ -25,6 +25,7 @@ labels = {
 }
 
 top_retailers = ['Amazon', 'Apple', 'Dell', 'Walmart', 'Target', 'Autozone']
+materials = ['plastic', 'cardboard', 'paper', 'carton']
 
 def call_Vision_API(image_binary, requested_features):
     '''
@@ -140,3 +141,31 @@ def find_retailer(image_binary):
             return annotation.description
 
     return logo_OCR(image_binary)
+
+def find_materials(image_binary):
+    '''
+    Calls the Google Vision API label detection and extracts information about
+    materials.
+    Arguments:
+        - image_binary: image_data
+
+    Returns: List of materials represented as strings.
+    '''
+    api_result = call_Vision_API(image_binary, ['label_detection'])
+
+    if not api_result.label_annotations:
+        return False
+
+    packaging_materials = []
+
+    for label in api_result.label_annotations:
+        label = label.description
+        label = label.lower()
+        for material in materials:
+            if material in label:
+                packaging_materials.append(material)
+
+    # remove duplicates
+    packaging_materials = list(dict.fromkeys(packaging_materials))
+
+    return packaging_materials
