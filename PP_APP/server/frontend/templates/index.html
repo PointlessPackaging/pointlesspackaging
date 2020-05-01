@@ -17,15 +17,23 @@
 <div class="container p-3 my-3 border">
 <form id="imageUploadForm" method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleInputEmail1">Your Email</label>
+        <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp"
+            placeholder="Enter your email address">
+        <small id="emailHelp" class="form-text text-muted">This cannot be empty.</small>
+    </div>
     <label for="top_img">Top View</label>
     <div class="custom-file">
         <input type="file" class="custom-file-input" id="top_img" required>
         <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+        <small id="emailHelp" class="form-text text-muted">This cannot be empty.</small>
     </div>
     <label for="side_img">Side View</label>
     <div class="custom-file">
         <input type="file" class="custom-file-input" id="side_img" required>
         <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+        <small id="emailHelp" class="form-text text-muted">This cannot be empty.</small>
     </div>
     <input type="submit" id="btnSubmit" name="submit" value="Make Inference" class="btn btn-primary my-1">
 </form>
@@ -33,9 +41,9 @@
 <img src="" id = "res_img" class="rounded mx-auto d-block" style="max-height:300px;">
 <div id="post_infer" style="display: none;" align="center">
     <h3>Score: <span id="score"></span></h3>
-    <p>Outerbox: <span id="outerbox"></span></p>
-    <p>Innerbox: <span id="innerbox"></span></p>
-    <p>Item: <span id="item"></span></p>
+    <p>Outerbox: <span id="outer_size"></span></p>
+    <p>Innerbox: <span id="inner_size"></span></p>
+    <p>Item: <span id="item_size"></span></p>
     <p>Time elapsed: <span id="time_elapsed"></span> seconds</p>
 </div>
 </div>

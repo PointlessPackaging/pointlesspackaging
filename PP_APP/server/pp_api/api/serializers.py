@@ -1,27 +1,45 @@
 from rest_framework import serializers
 
 from pp_api.models import (
-    hello_rest,
-    image_post,
-    image_post_predicted,
+    PPUsers,
+    Packager,
+    ImagePost,
+    PredictedImagePost,
 )
 
-class hello_rest_serializer(serializers.ModelSerializer):
+class PPUsersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = hello_rest
+        model = PPUsers
         fields = '__all__'
-        
-class ImagePostSerializer(serializers.ModelSerializer):
+
+class PackagerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = image_post_predicted
-        fields = ['img_post_id','packager','infer_img', 'outerbox','innerbox','item']
+        model = Packager
+        fields = ['name','brand_name', 'count','score']
+
+class PredictedImagePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PredictedImagePost
+        fields = ['img_post', 'outer_size','inner_size','item_size']
 
 class UploadSerializer(serializers.ModelSerializer):
     class Meta:
-        model = image_post
-        fields = ['top_img','side_img']
+        model = ImagePost
+        fields = ['top_img','side_img','infer_img']
 
-class PredictedSaveSerializer(serializers.ModelSerializer):
+class DisplayPackagerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = image_post_predicted
-        fields = ['img_post_id', 'packager', 'score', 'infer_img', 'outerbox','innerbox','item']
+        model = Packager
+        fields = ['brand_name', 'score']
+
+class DisplayImagePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagePost
+        fields = ['id', 'top_img','side_img','infer_img','date_posted']
+
+class DisplayFeedSerializer(serializers.ModelSerializer):
+    img_post = DisplayImagePostSerializer(many=False, read_only=True)
+    packager = DisplayPackagerSerializer(many=False, read_only=True)
+    class Meta:
+        model = PredictedImagePost
+        fields = ['img_post', 'packager', 'score', 'materials', 'outer_size','inner_size','item_size',]
