@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block tables %}
+<div class="container-fluid">
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Pointless Packaging Stats Presentation</h1>
+<p class="mb-4">Charts demo messages.</p>
+<!-- Content Row -->
+<div class="row">
+   <div class='col-sm-6'>
+      <!-- Time Chart -->
+      <div class="card shadow mb-4">
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Time versus Amount of Packaging</h6>
+         </div>
+         <div class="card-body">
+            <div class="chart-area">
+               <canvas id="myChart3"></canvas>
+            </div>
+            <hr>
+            Chart descriptions.
+         </div>
+      </div>
+      <!-- Company Chart -->
+      <div class="card shadow mb-4">
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Amount of Pointless Packaging of Top Companies</h6>
+         </div>
+         <div class="card-body">
+            <div class="chart-area">
+               <canvas id="myChart2"></canvas>
+            </div>
+            <hr>
+            Chart descriptions.
+         </div>
+      </div>
+   </div>
+   <!-- Contain Chart -->
+   <div class="col-xl-4 col-lg-5">
+      <div class="card shadow mb-4">
+         <!-- Card Header - Dropdown -->
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Packages Contain Plastic</h6>
+         </div>
+         <!-- Card Body -->
+         <div class="card-body">
+            <div class="chart-pie pt-4">
+               <canvas id="myChart4" width="400" height="295"></canvas>
+            </div>
+            <hr>
+            Chart descriptions.
+         </div>
+      </div>
+   </div>
+</div>
+
+   <!-- Fancy Company Chart -->
+   <div class='col-sm-6'>
+      <div class="card shadow mb-4">
+         <!-- Card Header - Dropdown -->
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Amount of Pointless Packaging of Top Companies</h6>
+         </div>
+         <!-- Card Body -->
+         <div class="card-body">
+            <div class="chart-pie pt-4">
+               <canvas id="myChart1"></canvas>
+            </div>
+            <hr>
+            Chart descriptions.
+         </div>
+      </div>
+   </div>
+
+
+
+<!-- /.container-fluid -->
+{% endblock tables %}

@@ -8,11 +8,13 @@ from django.db import transaction
 # Then copy this file inside 'migrations' directory, and then 
 # run `migrate` again, then delete it from the folder.
 # keep a copy of this file outside the folder
+from meta import DEFAULT_EMAIL
+
 
 @transaction.atomic
 def add_main_users(apps, schema_editor):
     root_user = Account(
-        email='admin@pp.com', # CHANGE THIS IN THE MAIN SERVER
+        email=DEFAULT_EMAIL, # CHANGE THIS IN THE MAIN SERVER
         username='admin',
         is_admin=True,
         is_active=True,
