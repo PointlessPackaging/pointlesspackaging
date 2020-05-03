@@ -8,7 +8,8 @@ from pp_api.api.views import (
     search_user_posts_view,
     display_all_packagers_view,
     top_five_best_view,
-    top_five_worst_view
+    top_five_worst_view,
+    ChartData,
 )
 
 app_name = 'pp_api'
@@ -23,4 +24,5 @@ urlpatterns = [
     path('upload', upload_imgs, name='upload'),
     path('update', update_img_post, name='update'),
     # path('delete', delete_post, name='delete'),
+    path('chart_data/', ChartData.as_view()),
 ]
