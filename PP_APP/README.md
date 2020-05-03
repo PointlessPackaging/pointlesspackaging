@@ -15,6 +15,9 @@
     - This will seed 40 of the most common brands with `score` and `count` choson at random. For more information, checkout out `server/pp_api/migrations/pp0002_initpackager_20200429_0854.py`
 4. `python manage.py runserver`
 
+5. Port-In-Used Error for Mac
+    - `sudo lsof -t -i tcp:8000 | xargs kill -9`
+
 If you have already made the migrations, skip step 2 and 3.
 
 The API should be running! But we are not yet done with the setup as we have to setup the Mask R-CNN.

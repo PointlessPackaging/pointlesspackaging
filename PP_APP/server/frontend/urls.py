@@ -4,6 +4,7 @@ from .views import (
     about_view,
     upload_view,
     success_view
+    charts_view,
 )
 
 #app_name = 'frontend'
@@ -13,4 +14,5 @@ urlpatterns = [
     path('about/', about_view, name='about'),
     path('upload/', upload_view, name='upload'),
     path('success/', success_view, name='success')
+    path('charts/', charts_view, name='charts'),
 ]

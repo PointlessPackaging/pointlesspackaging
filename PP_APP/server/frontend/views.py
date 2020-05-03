@@ -12,3 +12,6 @@ def upload_view(request):
 
 def success_view(request):
     return render(request, 'frontend/success.html', {'title' : 'Success!'})
+
+def charts_view(request, *args, **kwargs):
+    return render(request, 'charts.html', {})
