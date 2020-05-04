@@ -2,7 +2,18 @@ function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
 }
+// Display image before uploading
+// https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
+function readURL(input, elem_id) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('#' + elem_id).attr('style', 'background-image: url(' + e.target.result + ');background-repeat:no-repeat;background-size:cover;color:#fff;background-attachment:scroll;background-position:center;');
+    }
 
+    reader.readAsDataURL(input.files[0]); // convert to base64 string
+  }
+}
 $(document).ready(function () {
     $("#btnSubmit").click(function (event) {
         
@@ -82,16 +93,60 @@ $(document).ready(function () {
     });
 
     $('#top_img').on('change', function () {
-        //get the file name
-        var fileName = $(this).val();
-        //replace the "Choose a file" label
-        $(this).next('.custom-file-label').html(fileName.split(/(\\|\/)/g).pop());
+      readURL(this, $(".top-dropzone").attr("id"));
     })
     $('#side_img').on('change', function () {
-        //get the file name
-        var fileName = $(this).val();
-        //replace the "Choose a file" label
-        $(this).next('.custom-file-label').html(fileName.split(/(\\|\/)/g).pop());
+      readURL(this, $(".side-dropzone").attr("id"));
     })
 
 });
+
+// NEW THEME UPDATES BELOW
+
+what_page = document.getElementById("page_name").value;
+(function($) {
+  "use strict"; // Start of use strict
+
+  // Smooth scrolling using jQuery easing
+  $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        $('html, body').animate({
+          scrollTop: (target.offset().top - 70)
+        }, 1000, "easeInOutExpo");
+        return false;
+      }
+    }
+  });
+
+  // Closes responsive menu when a scroll trigger link is clicked
+  $('.js-scroll-trigger').click(function() {
+    $('.navbar-collapse').collapse('hide');
+  });
+
+  // Activate scrollspy to add active class to navbar items on scroll
+  $('body').scrollspy({
+    target: '#mainNav',
+    offset: 100
+  });
+
+  // Collapse Navbar
+  var navbarCollapse = function() {
+    if ($("#mainNav").offset().top > 100) {
+      $("#mainNav").addClass("navbar-shrink");
+      $("#mainNav").addClass("mainNav-bg");
+    } else {
+      $("#mainNav").removeClass("navbar-shrink");
+      $("#mainNav").removeClass("mainNav-bg");
+    }
+  };
+  // Collapse now if page is not at top
+  if (what_page == 'home'){
+    navbarCollapse();
+    // Collapse the navbar when page is scrolled
+    $(window).scroll(navbarCollapse);
+  }
+
+})(jQuery); // End of use strict

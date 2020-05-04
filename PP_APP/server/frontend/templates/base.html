@@ -1,60 +1,151 @@
+{% load static %}
+<!-- DJANGO BASE TEMPLATE STARTS HERE -->
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <!-- Meta Tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>ECS193-EPP</title>
-      {% load static %}
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-      <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-      {% if title %}
-          <title>EPP API {{ title }}</title>
-      {% else %}
-          <title>EPP API</title>
-      {% endif %}
-   </head>
-   <body>
-      <!-- Navigation Section -->
-      <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
-         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="../../media/images/logo.png" width="350" height="40"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title> {{ title }} | Pointless Packaging</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Basic&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}" defer></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
+    
+    <!-- Plugin JavaScript -->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}" defer></script>
+
+    <!-- Chart Plugin JavaScript -->
+    <!-- {% include 'base/js.html' %} -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0" defer></script>
+    <script src="{% static "js/charts.js" %}" defer></script>
+    <script src="{% static "js/tables.js" %}" defer></script>
+        <!-- Chart - Bootstrap Optional Theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Custom scripts for this template -->
+    <script src="{% static 'js/script.js' %}" defer></script>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top mainNav-bg" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="/">Pointless Packaging</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-               <ul class="navbar-nav ml-auto">
-                  <li class="nav-item active">
-                     <a class="nav-link" href="#">Home</a>
-                  </li>
-                  <li class="nav-item active">
-                     <a class="nav-link" href="#">About</a>
-                  </li>
-                  <li class="nav-item active">
-                     <a class="nav-link" href="#">Contact</a>
-                  </li>
-                  <li class="nav-item active">
-                     <a class="nav-link" href="#">Demo</a>
-                  </li>
-               </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/rate">Rate!</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/feed">Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/ranking">Ranking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+                    </li>
+                </ul>
             </div>
-         </div>
-      </nav>
+        </div>
+    </nav>
 
-      <!-- DragDrop Section -->
+    <!-- DJANGO BASE TEMPLATE TEMPORARILY ENDS HERE -->
+    {% block content %}
 
-      <!-- Charts Section -->
-      {% include 'base/js.html' %}
-      {% block charts %}{% endblock charts %}
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-      <script src="{% static "js/charts.js" %}"></script>
+    <!-- PAGE CONTENT GOES HERE -->
 
-      <!-- Tables Section -->
-      {% include 'base/js.html' %}
-      {% block tables %}{% endblock tables %}
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-      <script src="{% static "js/tables.js" %}"></script>
-   </body>
+    {% endblock %}
+    <!-- DJANGO BASE TEMPLATE STARTS HERE -->
+    <!-- Contact Section -->
+    <section class="contact-section bg-black">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0">Address</h4>
+                            <hr class="my-4">
+                            <div class="small text-black-50">4923 Market Street, Orlando FL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0">Email</h4>
+                            <hr class="my-4">
+                            <div class="small text-black-50">
+                                <a href="#">hello@yourdomain.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="card py-4 h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                            <h4 class="text-uppercase m-0">Phone</h4>
+                            <hr class="my-4">
+                            <div class="small text-black-50">+1 (555) 902-8832</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="social d-flex justify-content-center">
+                <a href="#" class="mx-2">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="mx-2">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://github.com/kennylee9672/ECS193A" class="mx-2">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black small text-center text-white-50">
+        <div class="container">
+            Copyright &copy; Pointless Packaging 2020
+        </div>
+    </footer>
+    <input type="hidden" id="page_name" name="custId" value="{{page_name}}">
+</body>
 </html>
