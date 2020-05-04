@@ -1,0 +1,71 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block content %}
+
+<script>
+    function success() {
+        document.location.href = {% url 'success' %};
+    }
+</script>
+
+<div class="container p-4">
+  <div class="row">
+      <div class="col">
+          <label class="btn">
+              <div class="dropzone">
+                  <h2>TOP VIEW</h2>
+                  <p>(Click OR Drag and Drop)</p>
+              </div>
+              <input type="file" hidden>
+          </label>
+      </div>
+      <div class="col">
+            <label class="btn">
+                <div class="dropzone">
+                    <div class="dztext">
+                      <h2>SIDE VIEW</h2>
+                      <p>(Click OR Drag and Drop)</p>
+                    </div>
+                </div>
+                <input type="file" hidden>
+            </label>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col justify-content-center">
+      <button class="btn btn-primary btn-lg" onclick="success()">UPLOAD</button>
+    </div>
+  </div>
+</div>
+
+<div class="container p-3 my-3 border">
+<form id="imageUploadForm" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="top_img">Top View</label>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="top_img" required>
+        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+    </div>
+    <label for="side_img">Side View</label>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="side_img" required>
+        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+    </div>
+    <input type="submit" id="btnSubmit" name="submit" value="Make Inference" class="btn btn-primary my-1">
+</form>
+<p id="status"></p>
+<img src="" id = "res_img" class="rounded mx-auto d-block" style="max-height:300px;">
+<div id="post_infer" style="display: none;" align="center">
+    <h3>Score: <span id="score"></span></h3>
+    <p>Outerbox: <span id="outerbox"></span></p>
+    <p>Innerbox: <span id="innerbox"></span></p>
+    <p>Item: <span id="item"></span></p>
+    <p>Time elapsed: <span id="time_elapsed"></span> seconds</p>
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
+<script src="{% static "js/script.js" %}"></script>
+
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% block content %}
+  <div class="container-fluid p-3" style="background-image: url('../../static/css/images/background/green_background.jpg')">
+    <div class="container">
+      <p class="para p-4">
+        Large online retailers ship millions of packages each day, and they often
+        use packaging that is both wasteful and harmful. They do so to reduce costs
+        and as a result their packaging is excessive and contains non-biodegradable
+        materials, such as plastic. Ultimately, the environment pays the price as
+        shipping materials go to waste. The aim of our project is to draw attention
+        to these practices.
+      </p>
+
+      <p class="para p-4">
+        We created a system which uses images to automatically detect oversized
+        shipping boxes and harmful materials. Our method uses computer vision techniques
+        to analyze the images and calculate a packaging grade. With our results
+        we present the companies who used the most efficient packaging, informing
+        consumers of retailer practices and their impact on the environment. We
+        hope this project promotes change for more efficient packaging practices.
+      </p>
+
+      <p class="para p-4"> Our engineering design showcase youtube video will go here, but for the meantime
+      	enjoy Filip.
+      </p>
+    </div>
+  </div>
+
+  <div class="container p-5 video-cont">
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe src="https://www.youtube.com/watch?v=S9BUnP6TlO4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="container-fluid" style="background-image: url('../../static/css/images/background/green_background.jpg')">
+    <div class="container p-5">
+      <h1 style="text-align: center;">Our Team</h1>
+
+      <div class="row p-5">
+        <div class="col-sm offset-2">
+            <h3>Kenny Li</h3>
+            <a href="https://github.com/kennylee9672">Github</a> |
+            <a href="https://www.linkedin.com/feed/">LinkedIn</a>
+        </div>
+
+        <div class="col-sm offset-2">
+            <h3>Yoosuf Shafi</h3>
+            <a href="https://github.com/kennylee9672">Github</a> |
+            <a href="https://www.linkedin.com/feed/">LinkedIn</a>
+        </div>
+      </div>
+
+      <div class="row p-5">
+        <div class="col-sm offset-2">
+            <h3>Ryland Sepic</h3>
+            <a href="https://github.com/rmsepic">Github</a> |
+            <a href="https://www.linkedin.com/in/ryland-sepic/">LinkedIn</a>
+        </div>
+
+        <div class="col-sm offset-2">
+          <h3>Filip Stamenkovic</h3>
+          <a href="https://github.com/fstamenkovic">Github</a> |
+          <a href="https://www.linkedin.com/in/fstamenk/">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div> <!--- Container for background -->
+
+{% endblock content %}

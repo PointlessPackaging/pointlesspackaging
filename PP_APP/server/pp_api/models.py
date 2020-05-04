@@ -4,7 +4,7 @@ from django.utils import timezone
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
-from resizeimage import resizeimage
+from django_resized import ResizedImageField
 
 
 """ Django basic reference model """
@@ -38,51 +38,10 @@ class Packager(models.Model):
 
 class ImagePost(models.Model):
     user_id = models.ForeignKey(PPUsers, on_delete=models.CASCADE)
-    top_img = models.ImageField(upload_to=top_img_path, null=False, blank=False)
-    side_img = models.ImageField(upload_to=side_img_path, null=False, blank=False)
-    infer_img = models.ImageField(upload_to=infer_img_path, null=True, blank=True)
+    top_img = ResizedImageField(size=[600, 300], force_format='JPEG', upload_to=top_img_path, null=False,blank=False)
+    side_img = ResizedImageField(size=[600, 300], force_format='JPEG', upload_to=side_img_path, null=False,blank=False)
+    infer_img = ResizedImageField(size=[600, 300], force_format='JPEG', upload_to=infer_img_path, null=True,blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f'from ImagePost {self.id}'
-
-    def create(self, validated_data):
-        return ImagePost(**validated_data)
-
-    ## https://stackoverflow.com/questions/30434323/django-resize-image-before-upload
-    def save(self, *args, **kwargs):
-        pil_image_obj = Image.open(self.top_img)
-        if pil_image_obj.size[1] > 300:
-            new_image = resizeimage.resize_height(pil_image_obj, 300)
-            new_image_io = BytesIO()
-            new_image.save(new_image_io, format='JPEG')
-
-            temp_name = self.top_img.name
-            self.top_img.delete(save=False)
-
-            self.top_img.save(
-                temp_name,
-                content=ContentFile(new_image_io.getvalue()),
-                save=False
-            )
-
-        pil_image_obj = Image.open(self.side_img)
-        if pil_image_obj.size[1] > 300:
-            new_image = resizeimage.resize_height(pil_image_obj, 300)
-            new_image_io = BytesIO()
-            new_image.save(new_image_io, format='JPEG')
-
-            temp_name = self.side_img.name
-            self.side_img.delete(save=False)
-
-            self.side_img.save(
-                temp_name,
-                content=ContentFile(new_image_io.getvalue()),
-                save=False
-            )
-
-        super(ImagePost, self).save(*args, **kwargs)
-
 
 class PredictedImagePost(models.Model):
     img_post = models.ForeignKey(ImagePost, on_delete=models.CASCADE)
