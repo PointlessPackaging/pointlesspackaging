@@ -43,6 +43,7 @@ class ImagePost(models.Model):
     infer_img = ResizedImageField(size=[600, 300], force_format='JPEG', upload_to=infer_img_path, null=True,blank=True)
     date_posted = models.DateTimeField(default=timezone.now)
 
+
 class PredictedImagePost(models.Model):
     img_post = models.ForeignKey(ImagePost, on_delete=models.CASCADE)
     packager = models.ForeignKey(Packager, on_delete=models.CASCADE, blank=True, null=True)

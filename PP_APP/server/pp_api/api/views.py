@@ -92,7 +92,6 @@ def upload_imgs(request):
                 return Response({'response': 'Prediction failed. Packaging box cannot be detected. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 return Response({'response': 'Prediction failed. Cannot detect the packaging box. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
-  
 
         """ Save the reponse from the Mask R-CNN API """
         predict_model = PredictedImagePost(img_post=ret_img_inst)
@@ -111,10 +110,7 @@ def upload_imgs(request):
                 }
 
         return Response({'response': data}, status=status.HTTP_200_OK)
-    return Response({'response': 'upload failed.'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         return Response({'response':data}, status=status.HTTP_200_OK)
-#     return Response({'response':'Prediction failed. Please try again.'}, status=status.HTTP_400_BAD_REQUEST) 
+    return Response({'response': 'Prediction failed. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
 
 # UPDATE IMAGE POST
 @api_view(['PUT'])
