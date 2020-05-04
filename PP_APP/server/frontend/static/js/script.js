@@ -1,6 +1,17 @@
+const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+let user_email = document.getElementById('user_email');
+let top_input = document.getElementById('top_img');
+let side_input = document.getElementById('side_img');
+
 function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     return regex.test(email);
+}
+function checkIfImageIsInvalid(img){
+  if (img === undefined || !validImageTypes.includes(img['type'])) {
+    return true;
+  }
+  return false;
 }
 // Display image before uploading
 // https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
@@ -26,9 +37,6 @@ $(document).ready(function () {
         // Create an FormData object 
         var data = new FormData();
 
-        var user_email = document.getElementById('user_email');
-        var top_input = document.getElementById('top_img');
-        var side_input = document.getElementById('side_img');
         // If you want to add an extra field for the FormData
         data.append("packager", "DummyBrand");
         data.append("email", user_email.value);
@@ -38,6 +46,11 @@ $(document).ready(function () {
         if (!isEmail(user_email.value)){
             $("#status").text('Please enter valid email address.');
             return
+        }
+
+        if (checkIfImageIsInvalid(top_input.files[0]) || checkIfImageIsInvalid(side_input.files[0])) {
+          $("#status").text('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
+          return
         }
         // disabled the submit button
         $("#btnSubmit").prop("disabled", true);
@@ -74,28 +87,44 @@ $(document).ready(function () {
                 let elapsed = Math.floor(((new Date().getTime() - now) % (1000 * 60)) / 1000)
                 $("#time_elapsed").text(elapsed)
                 email_val = user_email.value
+                // store EMAIL locally so the user doesn't to retype in the email on refresh
+                localStorage.setItem("user_email", email_val);
                 document.getElementById("imageUploadForm").reset();
-                user_email.setAttribute('value', email_val)
-                $('#top_img').next('.custom-file-label').html("Choose file...");
-                $('#side_img').next('.custom-file-label').html("Choose file...");
+                user_email.setAttribute('value', email_val);
+
+
+                $('#top-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_top.jpg) top left no-repeat;background-size:cover;');
+                $('#side-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_side.jpg) top left no-repeat;background-size:cover;');
 
             },
             error: function (e) {
-                // $("#status").text(e.responseText);
-                $("#status").text('Please try again.');
-                console.log("ERROR : ", e);
+              $("#status").text(JSON.parse(e.responseText).response);
+                // $("#status").text('Please try again.');
                 $("#btnSubmit").prop("disabled", false);
                 $("#res_img").attr("src", "")
-
+                email_val = user_email.value
+                localStorage.setItem("user_email", email_val);
+                document.getElementById("imageUploadForm").reset();
+                user_email.setAttribute('value', email_val)
+                $('#top-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_top.jpg) top left no-repeat;background-size:cover;');
+                $('#side-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_side.jpg) top left no-repeat;background-size:cover;');
             }
         });
 
     });
 
     $('#top_img').on('change', function () {
+      if (checkIfImageIsInvalid(top_input.files[0])) {
+        $("#status").text('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
+        return
+      }
       readURL(this, $(".top-dropzone").attr("id"));
     })
     $('#side_img').on('change', function () {
+      if (checkIfImageIsInvalid(side_input.files[0])) {
+        $("#status").text('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
+        return
+      }
       readURL(this, $(".side-dropzone").attr("id"));
     })
 
@@ -147,6 +176,9 @@ what_page = document.getElementById("page_name").value;
     navbarCollapse();
     // Collapse the navbar when page is scrolled
     $(window).scroll(navbarCollapse);
+  }
+  if (what_page=='rate'){
+    $("#user_email").val(localStorage.getItem("user_email"));
   }
 
 })(jQuery); // End of use strict
