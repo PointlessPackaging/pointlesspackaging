@@ -84,7 +84,6 @@ def upload_imgs(request):
                 return Response({'response':'Prediction failed. Error with neural network. Please try again later.'}, status=status.HTTP_400_BAD_REQUEST) 
             else:
                 return Response({'response':'Prediction failed. Error occured with neural network. Please try again later.'}, status=status.HTTP_400_BAD_REQUEST)
-
         
         """ If prediction failed to detect the outerbox size """
         if prediction_area.get('outerbox') == None:
