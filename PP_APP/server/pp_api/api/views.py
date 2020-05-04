@@ -55,7 +55,7 @@ def upload_imgs(request):
         if email_serializer.is_valid():
             user_id=email_serializer.save()
         else:
-            return Response({'response':'Error.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'response':'Error occurred.'}, status=status.HTTP_400_BAD_REQUEST)
  
     """ Upload and save the image on the server"""
     upload_model=ImagePost(user_id=user_id)
@@ -72,9 +72,18 @@ def upload_imgs(request):
         except:
             """ If inference fails, delete the uploaded image. """
             if ret_img_inst.delete():
-                return Response({'response':'upload failed, uploads deleted'}, status=status.HTTP_400_BAD_REQUEST) 
+                return Response({'response':'Prediction failed. Error with neural network. Please try again later.'}, status=status.HTTP_400_BAD_REQUEST) 
             else:
-                return Response({'response':'upload failed, uploads NOT deleted.'}, status=status.HTTP_400_BAD_REQUEST) 
+                return Response({'response':'Prediction failed. Error occured with neural network. Please try again later.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        
+        """ If prediction failed to detect the outerbox size """
+        if prediction_area.get('outerbox') == None:
+            if ret_img_inst.delete():
+                return Response({'response': 'Prediction failed. Packaging box cannot be detected. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({'response': 'Prediction failed. Cannot detect the packaging box. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
+            
 
         """ Save the reponse from the Mask R-CNN API """
         predict_model = PredictedImagePost(img_post=ret_img_inst)
@@ -93,7 +102,7 @@ def upload_imgs(request):
             }
 
         return Response({'response':data}, status=status.HTTP_200_OK)
-    return Response({'response':'upload failed.'}, status=status.HTTP_400_BAD_REQUEST) 
+    return Response({'response':'Prediction failed. Please try again.'}, status=status.HTTP_400_BAD_REQUEST) 
 
 # UPDATE IMAGE POST
 @api_view(['PUT'])
@@ -107,7 +116,7 @@ def update_img_post(request):
     try:
         update_model = PredictedImagePost.objects.get(img_post=request.data.get('post_id'))
     except PredictedImagePost.DoesNotExist:
-        return Response({'response':'Invalid post id.'},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'response':'Post ID cannot be found.'},status=status.HTTP_400_BAD_REQUEST)
 
     """ Normalize the packager name. If failure, delete the post. """
     try:
@@ -150,7 +159,7 @@ def update_img_post(request):
         packager_inst.score=min(10, (count*avg_score+new_score)/(count+1))
         packager_inst.save()
         
-        return Response({'response':'Successfully updated.'},status=status.HTTP_200_OK)
+        return Response({'response':'success'},status=status.HTTP_200_OK)
     except:
         del_str=' not deleted.'
         if update_model.img_post.delete():
