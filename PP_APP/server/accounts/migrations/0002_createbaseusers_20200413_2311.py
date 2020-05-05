@@ -3,6 +3,7 @@
 from django.db import migrations, models
 from accounts.models import Account
 from django.db import transaction
+from meta import DEFAULT_EMAIL
 
 # Run `makemigrations` and `migrate` first. 
 # Then copy this file inside 'migrations' directory, and then 
@@ -12,7 +13,7 @@ from django.db import transaction
 @transaction.atomic
 def add_main_users(apps, schema_editor):
     root_user = Account(
-        email='admin@pp.com', # CHANGE THIS IN THE MAIN SERVER
+        email=DEFAULT_EMAIL, # CHANGE THIS IN THE MAIN SERVER
         username='admin',
         is_admin=True,
         is_active=True,

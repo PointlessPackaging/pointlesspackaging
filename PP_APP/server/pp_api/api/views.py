@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -16,7 +17,7 @@ from pp_api.models import (
     Packager,
     ImagePost, 
     PredictedImagePost,
-    )
+)
 
 from pp_api.api.serializers import (
     PPUsersSerializer,
@@ -25,6 +26,12 @@ from pp_api.api.serializers import (
     PredictedImagePostSerializer,
     DisplayFeedSerializer,
     DisplayPackagerSerializer,
+)
+
+from meta import (
+    MONTHS,
+    PLASTIC,
+    PACKAGERS_NUM,
 )
 
 from accounts.models import Account
@@ -263,3 +270,79 @@ class search_user_posts_view(ListAPIView):
         return queryset
     serializer_class = DisplayFeedSerializer
     pagination_class = PageNumberPagination
+
+
+class TableData(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    @staticmethod
+    def get_packagers():
+        top_names, top_scores = [], []
+        worst_names, worst_scores = [], []
+        top_packagers = Packager.objects.all().order_by('-score')[:PACKAGERS_NUM]
+        worst_packagers = Packager.objects.all().order_by('score')[:PACKAGERS_NUM]
+        for i in range(min(len(top_packagers), len(worst_packagers))):
+            top_names.append(getattr(top_packagers[i], 'brand_name'))
+            top_scores.append(getattr(top_packagers[i], 'score'))
+            worst_names.append(getattr(worst_packagers[i], 'brand_name'))
+            worst_scores.append(getattr(worst_packagers[i], 'score'))
+        return top_names, top_scores, worst_names, worst_scores
+
+    def get(self, request):
+        top_packagers, top_packagers_count, \
+            worst_packagers, worst_packagers_count = self.get_packagers()
+        context = {
+            "topPackagers": top_packagers,
+            "topPackagersCount": top_packagers_count,
+            "worstPackagers": worst_packagers,
+            "worstPackagersCount": worst_packagers_count,
+        }
+        return Response(context)
+
+
+class ChartData(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    @staticmethod
+    def get_packagers():
+        brand_names, brand_count = [], []
+        packagers = Packager.objects.all().order_by('-score')[:PACKAGERS_NUM]
+        for pkg in packagers:
+            brand_names.append(getattr(pkg, 'brand_name'))
+            brand_count.append(getattr(pkg, 'count'))
+        return brand_names, brand_count
+
+    @staticmethod
+    def get_months():
+        months_count = []
+        for i in range(len(MONTHS)):
+            months_count.append(ImagePost.objects.filter(date_posted__month=i).count())
+        return months_count
+
+    @staticmethod
+    def get_plastics():
+        plastics_count = [0]
+        predicted_posts = PredictedImagePost.objects.all()
+        total_count = len(predicted_posts)
+        for post in predicted_posts:
+            materials = getattr(post, 'materials')
+            if 'plastic' in materials:
+                plastics_count[0] += 1
+        plastics_count.append(total_count)
+        return plastics_count
+
+    def get(self, request):
+        packagers, packagers_count = self.get_packagers()
+        months_count = self.get_months()
+        plastics_count = self.get_plastics()
+        context = {
+            "packagers": packagers,
+            "packagersCount": packagers_count,
+            "months": MONTHS,
+            "monthsCount": months_count,
+            "plastic": PLASTIC,
+            "plasticCount": plastics_count,
+        }
+        return Response(context)

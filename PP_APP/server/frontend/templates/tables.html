@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block charts %}
+<div class="container-fluid">
+
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Pointless Packaging Stats Presentation</h1>
+<p class="mb-4">Tables demo messages.</p>
+
+<!-- Content Row -->
+<div class="row">
+
+   <!-- Top Chart -->
+   <div class='col-sm-6'>
+      <div class="card shadow mb-4">
+         <!-- Card Header - Dropdown -->
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Top Companies Rank</h6>
+         </div>
+         <!-- Card Body -->
+         <div class="card-body">
+            <div class="chart-pie pt-4">
+               <canvas id="myChart5"></canvas>
+            </div>
+            <hr>
+            Chart descriptions.
+         </div>
+      </div>
+   </div>
+
+   <!-- Worst Chart -->
+   <div class='col-sm-6'>
+      <div class="card shadow mb-4">
+         <!-- Card Header - Dropdown -->
+         <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Worst Companies Rank</h6>
+         </div>
+         <!-- Card Body -->
+         <div class="card-body">
+            <div class="chart-pie pt-4">
+               <canvas id="myChart6"></canvas>
+            </div>
+            <hr>
+            Chart descriptions.
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- /.container-fluid -->
+{% endblock charts %}

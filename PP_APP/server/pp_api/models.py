@@ -21,6 +21,9 @@ def infer_img_path(instance, filename):
 class PPUsers(models.Model):
     email=models.EmailField(verbose_name="email", max_length=60, unique=True)
 
+    def __str__(self):
+        return f'by {self.email}'
+
 class Packager(models.Model):
     name = models.CharField(max_length=50, unique=True)
     brand_name = models.CharField(max_length=50, default="-1")
