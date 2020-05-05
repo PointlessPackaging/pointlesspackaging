@@ -22,6 +22,14 @@ from meta import (
 
 @transaction.atomic
 def add_packager_data():
+    null_packager = Packager(
+            name='null',
+            brand_name='null',
+            count=random.choice(range(500, 1000)),
+            score=random.uniform(5, 10)
+        )
+    null_packager.save()
+
     packagers = []
     for brand in BRANDS:
         packager = Packager(
@@ -40,7 +48,7 @@ def add_post_data(apps, schema_editor):
     packagers = add_packager_data()
     user = PPUsers(email=DEFAULT_EMAIL)
     user.save()
-    for i in range(DUMMY_NUM):
+    for _ in range(DUMMY_NUM):
         post = ImagePost(
             user_id=user,
             top_img=DEFAULT_IMG,
@@ -51,8 +59,8 @@ def add_post_data(apps, schema_editor):
         post.save()
         pd_post = PredictedImagePost(
             img_post=post,
-            packager=packagers[random.randint(0, len(packagers)-1)],
-            materials=random.sample(MATERIALS, random.randint(0, len(MATERIALS)-1)),
+            packager=random.choice(packagers),
+            materials=random.choice(MATERIALS),
             score=random.uniform(1, 10),
             outer_size=random.randint(3000, 4000),
             inner_size=random.randint(1000, 3000),

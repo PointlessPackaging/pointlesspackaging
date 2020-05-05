@@ -94,6 +94,8 @@ def upload_imgs(request):
 
         """ Save the reponse from the Mask R-CNN API """
         predict_model = PredictedImagePost(img_post=ret_img_inst)
+        predict_model.packager = Packager.objects.get(pk=1) # make sure `null` packager has id=1 for this to work properly
+        predict_model.materials = 'null'
         predict_model.outer_size = prediction_area.get('outerbox')
         predict_model.inner_size = prediction_area.get('innerbox')
         predict_model.item_size = prediction_area.get('item')

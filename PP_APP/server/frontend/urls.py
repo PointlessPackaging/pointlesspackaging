@@ -11,7 +11,7 @@ from .views import (
     tables_view,
 )
 
-#app_name = 'frontend'
+app_name = 'frontend'
 
 urlpatterns = [
     path('', home_view, name='home'),
