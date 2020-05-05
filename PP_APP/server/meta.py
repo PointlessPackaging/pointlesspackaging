@@ -1,3 +1,6 @@
+DEFAULT_EMAIL = 'admin@pp.com'
+
+DEFAULT_IMG = 'default.jpg'
 PACKAGERS = ["Test", "Walmart", "Ebay", "Target", "Costco", "DoorDash"]
 PACKAGERS_COUNT = [3, 8, 2, 3, 7, 2]
 MONTHS = ["January", "February", "March", "April", "May", "June",
@@ -13,5 +16,3 @@ BRANDS = ["Amazon", "eBay", "Etsy", "Overstock", "Zappos", "Wish", "Alibaba", "A
           "Puma", "Timberland"]
 MATERIALS = ['plastic', 'cardboard', 'paper', 'paperboard']
 DUMMY_NUM = 300
-DEFAULT_EMAIL = 'admin@pp.com'
-DEFAULT_IMG = 'default.jpg'

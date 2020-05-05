@@ -12,10 +12,10 @@
     - Default Superuser info for login:
         - `username='admin@pp.com', password='password'`
         - You should change this information in production. 
-    - This will seed 40 of the most common brands with `score` and `count` choson at random. For more information, checkout out `server/pp_api/migrations/pp0002_initpackager_20200429_0854.py`
+    - This will seed 40 of the most common brands with `score` and `count` choson at random. Also seeds `DUMMY_NUM` amount of dummy posts for testing. For more information, checkout out `server/pp_api/migrations/pp0002_initpackager_20200429_0854.py`. Some of the app configurations are in `server/meta.py`.
 4. `python manage.py runserver`
 
-5. Port-In-Used Error for Mac
+5. (For MAC users only) Port-In-Used Error for Mac
     - `sudo lsof -t -i tcp:8000 | xargs kill -9`
 
 If you have already made the migrations, skip step 2 and 3.
@@ -216,59 +216,7 @@ And...you are done! In terms of setting up at least...
     - Paginated: Yes
     - Description: Returns the top five worst retailers.
 
----
-# Other Information:
-- `localhost:8000` can be replaced with `pointlesspackaging.space` if accessing the cloud server.
-- Accessing the admin page: `http://localhost:8000/admin` and login as a superuser to have control.
-- Can use POSTMAN to make calls to the API as no authentication is needed.
-- Example of fully paginated response for `/api/display_feed?page=1`:
-    ```json
-    {
-        "count": 2,
-        "next": null,
-        "previous": null,
-        "results": [
-            {
-                "img_post": {
-                    "id": 1,
-                    "top_img": "http://localhost:8000/media/top/1/IMG_3.jpg",
-                    "side_img": "http://localhost:8000/media/side/1/IMG_26.jpg",
-                    "infer_img": "http://localhost:8000/media/infer/1/IMG_3.jpg",
-                    "date_posted": "2020-04-30T07:08:06.336221Z"
-                },
-                "packager": {
-                    "brand_name": "Amazon",
-                    "score": 9.41726906526411
-                },
-                "score": 7.58,
-                "materials": "{'responses':[{'logoAnnotations':[{'mid':'/m/045c7b','description':'google','score':0.980325,'boundingPoly':{'vertices':[{'x':12,'y':42},{'x':439,'y':42},{'x':439,'y':285},{'x':12,'y':285}]}}]}]}",
-                "outer_size": 40705,
-                "inner_size": 18522,
-                "item_size": 3454
-            },
-            {
-                "img_post": {
-                    "id": 2,
-                    "top_img": "http://localhost:8000/media/top/1/IMG_23_r1PfAgy.jpg",
-                    "side_img": "http://localhost:8000/media/side/1/IMG_23_LqYcfPY.jpg",
-                    "infer_img": "http://localhost:8000/media/infer/1/IMG_23_f9tmg18.jpg",
-                    "date_posted": "2020-04-30T07:15:33.802592Z"
-                },
-                "packager": {
-                    "brand_name": "eBay",
-                    "score": 6.775900552394034
-                },
-                "score": 6.45,
-                "materials": "",
-                "outer_size": 35678,
-                "inner_size": 19834,
-                "item_size": 2954
-            }
-        ]
-    }
-    ```
-  
-  - `/api/chart_data`
+- `/api/chart_data`
     - Request type: `GET`
     - URL: `http://localhost:8000/api/chart_data`
     - Request body: ()
@@ -374,6 +322,57 @@ And...you are done! In terms of setting up at least...
         ```
     - Description: Returns the top and worst packagers. 
 
+---
+# Other Information:
+- `localhost:8000` can be replaced with `pointlesspackaging.space` if accessing the cloud server.
+- Accessing the admin page: `http://localhost:8000/admin` and login as a superuser to have control.
+- Can use POSTMAN to make calls to the API as no authentication is needed.
+- Example of fully paginated response for `/api/display_feed?page=1`:
+    ```json
+    {
+        "count": 2,
+        "next": null,
+        "previous": null,
+        "results": [
+            {
+                "img_post": {
+                    "id": 1,
+                    "top_img": "http://localhost:8000/media/top/1/IMG_3.jpg",
+                    "side_img": "http://localhost:8000/media/side/1/IMG_26.jpg",
+                    "infer_img": "http://localhost:8000/media/infer/1/IMG_3.jpg",
+                    "date_posted": "2020-04-30T07:08:06.336221Z"
+                },
+                "packager": {
+                    "brand_name": "Amazon",
+                    "score": 9.41726906526411
+                },
+                "score": 7.58,
+                "materials": "{'responses':[{'logoAnnotations':[{'mid':'/m/045c7b','description':'google','score':0.980325,'boundingPoly':{'vertices':[{'x':12,'y':42},{'x':439,'y':42},{'x':439,'y':285},{'x':12,'y':285}]}}]}]}",
+                "outer_size": 40705,
+                "inner_size": 18522,
+                "item_size": 3454
+            },
+            {
+                "img_post": {
+                    "id": 2,
+                    "top_img": "http://localhost:8000/media/top/1/IMG_23_r1PfAgy.jpg",
+                    "side_img": "http://localhost:8000/media/side/1/IMG_23_LqYcfPY.jpg",
+                    "infer_img": "http://localhost:8000/media/infer/1/IMG_23_f9tmg18.jpg",
+                    "date_posted": "2020-04-30T07:15:33.802592Z"
+                },
+                "packager": {
+                    "brand_name": "eBay",
+                    "score": 6.775900552394034
+                },
+                "score": 6.45,
+                "materials": "",
+                "outer_size": 35678,
+                "inner_size": 19834,
+                "item_size": 2954
+            }
+        ]
+    }
+    ```
 
 ## Warnings:
 - Do not mess around with the `accounts` app migration unless you know what you are doing.

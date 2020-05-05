@@ -24,7 +24,7 @@ def success_view(request):
     return render(request, 'success.html', {'title' : 'Success!'})
 
 def charts_view(request, *args, **kwargs):
-    return render(request, 'charts.html', {})
+    return render(request, 'charts.html', {'title' : 'Charts'})
 
 def tables_view(request, *args, **kwargs):
-    return render(request, 'tables.html', {})
+    return render(request, 'tables.html', {'title' : 'Tables'})
