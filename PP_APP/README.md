@@ -15,6 +15,9 @@
     - This will seed 40 of the most common brands with `score` and `count` choson at random. For more information, checkout out `server/pp_api/migrations/pp0002_initpackager_20200429_0854.py`
 4. `python manage.py runserver`
 
+5. Port-In-Used Error for Mac
+    - `sudo lsof -t -i tcp:8000 | xargs kill -9`
+
 If you have already made the migrations, skip step 2 and 3.
 
 The API should be running! But we are not yet done with the setup as we have to setup the Mask R-CNN.
@@ -145,9 +148,6 @@ And...you are done! In terms of setting up at least...
                     "brand_name": "Cuyana",
                     "score": 9.634930018553689
                 }
-                .
-                .
-                .
             ]
         }
         ```
@@ -267,6 +267,113 @@ And...you are done! In terms of setting up at least...
         ]
     }
     ```
+  
+  - `/api/chart_data`
+    - Request type: `GET`
+    - URL: `http://localhost:8000/api/chart_data`
+    - Request body: ()
+    - Response body: 
+        ```json
+        {
+            "packagers": [
+                "Gucci",
+                "Target",
+                "AliExpress",
+                "Alibaba",
+                "Puma",
+                "Amazon"
+            ],
+            "packagersCount": [
+                715,
+                633,
+                621,
+                686,
+                718,
+                871
+            ],
+            "months": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "monthsCount": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                300,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "plastic": [
+                "yes",
+                "no"
+            ],
+            "plasticCount": [
+                115,
+                300
+            ]
+        }
+        ```
+    - Description: Returns data required by the charts
+    
+- `/api/table_data`
+    - Request type: `GET`
+    - URL: `http://localhost:8000/api/table_data`
+    - Request body: ()
+    - Response body: 
+        ```json
+        {
+            "topPackagers": [
+                "Gucci",
+                "Target",
+                "AliExpress",
+                "Alibaba",
+                "Puma",
+                "Amazon"
+            ],
+            "topPackagersCount": [
+                9.663983676396517,
+                9.594313064145851,
+                9.548720977242933,
+                9.48865581842632,
+                9.369596220918229,
+                9.29923884270799
+            ],
+            "worstPackagers": [
+                "J.Crew",
+                "Overstock",
+                "Prada",
+                "Kohl's",
+                "Burberry",
+                "Timberland"
+            ],
+            "worstPackagersCount": [
+                5.0071667725791205,
+                5.008649905994455,
+                5.094763050173453,
+                5.288666176898104,
+                5.41731266266707,
+                5.662817317513756
+            ]
+        }
+        ```
+    - Description: Returns the top and worst packagers. 
+
 
 ## Warnings:
 - Do not mess around with the `accounts` app migration unless you know what you are doing.
