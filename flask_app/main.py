@@ -7,6 +7,7 @@ all materials in the returned labels.
 from datetime import datetime
 import logging
 import os
+import argparse
 
 from flask import Flask, redirect, render_template, request, jsonify
 
@@ -86,6 +87,13 @@ def server_error(e):
 
 
 if __name__ == '__main__':
-    # This is used when running locally. Gunicorn is used to run the
-    # application on Google App Engine. See entrypoint in app.yaml.
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    parser = argparse.ArgumentParser(description="Check to run locally or not")
+    parser.add_argument("--local", action='store_true', dest='local', \
+            help='Add flag if you want to run app locally. Otherwise requires \
+            running in sudo')
+    args = parser.parse_args()
+    # run locally
+    if args.local:
+        app.run(host='127.0.0.1', port=8080, debug=True)
+    else:
+        app.run(host='0.0.0.0', port=80, debug=True)
