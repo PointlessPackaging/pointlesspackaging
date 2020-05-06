@@ -61,7 +61,7 @@ def find_materials():
     response = {
         'has_plastic' : False,
         'has_paper' : False,
-        'has_carton' : False,
+        'has_paperboard' : False,
         'has_cardboard' : False
     }
 
@@ -70,8 +70,8 @@ def find_materials():
             response['has_plastic'] = True
         elif material is 'paper':
             response['has_paper'] = True
-        elif material is 'carton':
-            response['has_carton'] = True
+        elif material is 'paperboard':
+            response['has_paperboard'] = True
         elif material is 'cardboard':
             response['has_cardboard'] = True
 

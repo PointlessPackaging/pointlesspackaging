@@ -11,6 +11,8 @@ import os
 from google.cloud import vision
 from google.cloud.vision import types
 
+import meta
+
 # Define a dictionary
 labels = {
     'label_detection' : types.Feature.LABEL_DETECTION,
@@ -24,8 +26,8 @@ labels = {
     'web_detection': types.Feature.WEB_DETECTION
 }
 
-top_retailers = ['Amazon', 'Apple', 'Dell', 'Walmart', 'Target', 'Autozone']
-materials = ['plastic', 'cardboard', 'paper', 'carton']
+top_retailers = meta.BRANDS
+materials = meta.MATERIALS
 
 def call_Vision_API(image_binary, requested_features):
     '''
