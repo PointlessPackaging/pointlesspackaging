@@ -1,5 +1,5 @@
 /*!
- * WE MODIFIED THE THEME BELOW: 
+ * WE MODIFIED THE THEME BELOW:
 
  * Start Bootstrap - Grayscale v5.0.9 (https://startbootstrap.com/template-overviews/grayscale)
  * Copyright 2013-2019 Start Bootstrap
@@ -217,7 +217,7 @@ background-image: linear-gradient(315deg, #29539b 0%, #2a74ff 74%);
   background: #fff;
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-size: cover;  
+  background-size: cover;
 }
 
 .masthead h1 {
@@ -423,4 +423,25 @@ background-image: linear-gradient(315deg, #29539b 0%, #2a74ff 74%);
 
 .contact-section .social a:active {
   color: #fff;
+}
+
+
+/* Ryland CSS */
+.cent-head {
+  text -align: center;
+}
+
+.logo-img {
+	padding: 5pt;
+	object-fit: cover;
+	height: 55px;
+}
+
+.my-custom-scrollbar {
+  position: relative;
+  height: 200px;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
 }

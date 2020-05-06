@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-
+#from .. import pp_api.models
+from pp_api.models import Packager
 
 # Create your views here.
 def home_view(request):
@@ -11,8 +12,13 @@ def rate_view(request):
 def feed_view(request):
     return render(request, 'feed.html', {'title' : 'Feed', 'page_name':'feed'})
 
-def ranking_view(request):
-    return render(request, 'ranking.html', {'title' : 'Ranking', 'page_name':'ranking'})
+def ranking_view(request):    
+    context = {
+        'title': 'Ranking',
+        'page_name' : 'ranking',
+        'companies' : Packager.objects.all()
+    }
+    return render(request, 'ranking.html', context)
 
 def about_view(request):
     return render(request, 'about.html', {'title' : 'About', 'page_name':'about'})

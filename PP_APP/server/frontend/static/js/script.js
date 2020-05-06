@@ -27,14 +27,14 @@ function readURL(input, elem_id) {
 }
 $(document).ready(function () {
     $("#btnSubmit").click(function (event) {
-        
+
         //stop submit the form, we will post it manually.
         event.preventDefault();
 
         // Get form
         var form = $('#fileUploadForm')[0];
 
-        // Create an FormData object 
+        // Create an FormData object
         var data = new FormData();
 
         // If you want to add an extra field for the FormData

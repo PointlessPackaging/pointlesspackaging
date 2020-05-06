@@ -1,13 +1,86 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+<script src="{% static 'js/data_access.js' %}" defer></script>
 
 <section id="about" class="about-section bg-light">
     <div class="container">
+      <!-- PAGE CONTENT GOES IN HERE -->
 
-        <!-- PAGE CONTENT GOES IN HERE -->
+      <!-- The top 5 companies -->
+      <div class="row justify-content-center py-5">
+        <div class="col-auto">
+          <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 400px;">
+            <div class="card bg-black py">
+              <div class="card-header py-7" style="text-align: center">
+                <h1 class="cent-head">Top 5 Retailers</h1>
 
+                <table class="table table-bordered table-responsive bg-white">
+                  <tbody>
+                      <tr id="topFiveTable">
+                          <!-- Filled in by Javascript -->
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 400px;">
+            <div class="card bg-black py">
+              <div class="card-header py-7" style="text-align: center">
+                <h1 class="cent-head">Bottom 5 Retailers</h1>
+
+                <table class="table table-bordered table-responsive bg-white">
+                  <tbody>
+                      <tr id="bottomFiveTable">
+                          <!-- Filled in by Javascript -->
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!--- row conatining the table -->
+
+    <div class="row py-lg-3 bg-black">
+      <div class="col-7">
+        <h2 class="px-5">All Company Rankings</h2>
+      </div>
+
+      <div class="col">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn-lg btn-dark" type="submit">Search</button>
+        </form>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" style="height: 400px;">
+            <table class="table table-bordered bg-white">
+              <tbody>
+                  {% for comp in companies %}
+                  <tr>
+                      <th scope="row"># {{ forloop.counter }}</th>
+                    <!--  <td><img src="../../static/css/images/website/target_logo.svg" class="logo-img"></td> -->
+                      <td>{{ comp.brand_name }}</td>
+                      <td>Score: {{ comp.score }}</td>
+                    <!--  <td><a href="#">view company details</a></td> -->
+                    </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+      </div> <!-- col -->
+    </div> <!--- row conatining the table -->
+
+    </div> <!-- container -->
+
 </section>
 
 {% endblock content %}
