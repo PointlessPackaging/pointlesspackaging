@@ -2,10 +2,12 @@
 
 This is a simple Flask app that runs our Google Vision API logic. The use of a
 python virtual environment is recommended. Necessary packages can be installed
-using `pip install -r requirement.txt`  
+using `pip install -r requirements.txt`  
 
-To run the server, simply run `python main.py`
+The server has two options to run. One on the cloud, and the other locally.
+To run the server locally, simply run `python main.py`--local
 and the server will run on `127.0.0.1:8080`
+Running it on the cloud requires root access.
 
 **Note:** when running locally, Google Cloud account credentials need to be
 enabled: follow instructions [here](https://cloud.google.com/vision/docs/libraries).
@@ -40,9 +42,8 @@ Check `static/js/app.js` for example on using
 the API from JavaScript.
 
 ## Deployment
-The API is deployed on the following Google Cloud instance:
-`https://smallwebsite.nw.r.appspot.com/`. To invoke the API, simply make an
-HTTP call to `https://smallwebsite.nw.r.appspot.com/find_retailer` or
-`https://smallwebsite.nw.r.appspot.com/check_plastic` or
-`https://smallwebsite.nw.r.appspot.com/find_materials` with the parameters
+The API is deployed on a VM instance in Google Cloud with the IP 34.71.6.144.
+ To invoke the API, simply make an HTTP call to `http://34.71.6.144/find_retailer` or
+`http://34.71.6.144/check_plastic` or
+`http://34.71.6.144/find_materials` with the parameters
 described in the API description heading above.
