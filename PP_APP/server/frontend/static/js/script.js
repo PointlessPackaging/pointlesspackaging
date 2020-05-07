@@ -2,6 +2,32 @@ const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
 let user_email = document.getElementById('user_email');
 let top_input = document.getElementById('top_img');
 let side_input = document.getElementById('side_img');
+let retailer = ''
+let materials = []
+
+function get_retailer(){
+  var formData = new FormData();
+  formData.append("side_view", side_input.files[0])
+  $.ajax({
+         url : 'http://34.71.6.144/find_retailer',
+         type : 'POST',
+         data : formData,
+         processData: false,  // tell jQuery not to process the data
+         contentType: false,  // tell jQuery not to set contentType
+         crossDomain: true,
+         beforeSend: function(data) {
+           //$("#retailer_name").text("Looking for retailer...")
+         },
+         success : function(data) {
+             console.log(data);
+             //alert(data.retailer);
+             retailer = data.retailer
+         },
+         error:function(e){
+           console.log(`${e}`)
+         }
+  });
+}
 
 function isEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -27,14 +53,14 @@ function readURL(input, elem_id) {
 }
 $(document).ready(function () {
     $("#btnSubmit").click(function (event) {
-        
+
         //stop submit the form, we will post it manually.
         event.preventDefault();
 
         // Get form
         var form = $('#fileUploadForm')[0];
 
-        // Create an FormData object 
+        // Create an FormData object
         var data = new FormData();
 
         // If you want to add an extra field for the FormData
@@ -73,6 +99,7 @@ $(document).ready(function () {
                 $("#item_size").text("");
                 $("#time_elapsed").text("")
                 now = new Date().getTime();
+                get_retailer();
             },
             success: function (data) {
                 $("#status").text("");
@@ -86,6 +113,8 @@ $(document).ready(function () {
                 $("#item_size").text(data.response.item_size)
                 let elapsed = Math.floor(((new Date().getTime() - now) % (1000 * 60)) / 1000)
                 $("#time_elapsed").text(elapsed)
+                $("#retailer").text(retailer)
+                console.log(retailer)
                 email_val = user_email.value
                 // store EMAIL locally so the user doesn't to retype in the email on refresh
                 localStorage.setItem("user_email", email_val);
