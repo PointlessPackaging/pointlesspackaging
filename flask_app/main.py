@@ -10,6 +10,8 @@ import os
 import argparse
 
 from flask import Flask, redirect, render_template, request, jsonify
+from flask_cors import CORS, cross_origin
+
 
 from google.cloud import vision
 
@@ -17,6 +19,8 @@ import image_analyzer as ia
 
 app = Flask(__name__)
 
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def homepage():
@@ -25,6 +29,7 @@ def homepage():
 
 
 @app.route('/find_retailer', methods=['GET', 'POST'])
+@cross_origin()
 def find_retailer():
     print("triggered")
     try:
@@ -38,6 +43,7 @@ def find_retailer():
     return jsonify(response), 200
 
 @app.route('/check_plastic', methods=['GET', 'POST'])
+@cross_origin()
 def check_plastic():
     try:
         photo = request.files['side_view'].read()
@@ -50,6 +56,7 @@ def check_plastic():
     return jsonify(response), 200
 
 @app.route('/find_materials', methods=['GET', 'POST'])
+@cross_origin()
 def find_materials():
     try:
         photo = request.files['side_view'].read()
