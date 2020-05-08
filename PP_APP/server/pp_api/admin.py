@@ -33,7 +33,7 @@ class ImagePostAdmin(admin.ModelAdmin):
     get_username.admin_order_field  = 'user_id'  #Allows column order sorting
     get_username.short_description = 'User'  #Renames column head
 
-    list_display = ('user_id', 'get_username', 'date_posted', 'infer_img', 'top_img', 'side_img')
+    list_display = ('id', 'get_username', 'date_posted', 'infer_img', 'top_img', 'side_img')
     search_fields = ('user_id__email', 'date_posted')
     readonly_fields = ()
     
@@ -52,7 +52,7 @@ class PredictedImagePostAdmin(admin.ModelAdmin):
     get_username.admin_order_field  = 'img_post'  #Allows column order sorting
     get_username.short_description = 'User'  #Renames column head
 
-    list_display = ('img_post', 'get_username', 'get_name','materials','score','outer_size','inner_size','item_size')
+    list_display = ('pk', 'get_username', 'get_name','materials','score','outer_size','inner_size','item_size')
     search_fields = ('img_post__user_id__email', 'packager__brand_name','materials','score','outer_size','inner_size','item_size')
     readonly_fields = ()
     

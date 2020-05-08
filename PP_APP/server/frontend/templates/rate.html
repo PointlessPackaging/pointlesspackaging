@@ -4,12 +4,21 @@
 
 <section id="about" class="about-section bg-light">
     <div class="container">
+
+    <div class="alert alert-danger alert-dismissible collapse" role="alert">
+        <p id="status"></p>
+        <button type="button" class="close" onclick="$('.alert').hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <img src="" id="res_img" class="rounded mx-auto d-block" style="max-height:0px;">
     <form id="imageUploadForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-
+        
         <div class="row">
             <div class="col-sm">
-                <label id="top-dropzone" class="dropzone top-dropzone" style="background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url({% static 'img/sample_top.jpg' %}) top left no-repeat;background-size:cover;">                    
+                <label id="top-dropzone" class="dropzone top-dropzone" style="background: url({% static 'img/sample_top.png' %}) top left no-repeat;background-size:cover;">                    
                     <div class="text-dropzone text-center align-middle">
                         <h2>TOP VIEW</h2>
                         <p>(Click OR Drag and Drop)</p>
@@ -18,7 +27,7 @@
                 </label>
             </div>
             <div class="col-sm">
-                <label id="side-dropzone" class="dropzone side-dropzone" style="background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url({% static 'img/sample_side.jpg' %}) top left no-repeat;background-size:cover;">
+                <label id="side-dropzone" class="dropzone side-dropzone" style="background: url({% static 'img/sample_side.png' %}) top left no-repeat;background-size:cover;">
                     <div class="text-center align-middle">
                         <div class="text-dropzone text-align-center">
                             <h2>LOGO VIEW</h2>
@@ -43,16 +52,6 @@
             </div>
         </div>
     </form>
-    <h2 class="align-items-center text-center">&nbsp;</h2>
-    <p id="status"></p>
-    <img src="" id="res_img" class="rounded mx-auto d-block" style="max-height:300px;">
-    <div id="post_infer" style="display: none;" align="center">
-        <h3>Score: <span id="score"></span></h3>
-        <p>Outerbox: <span id="outer_size"></span></p>
-        <p>Innerbox: <span id="inner_size"></span></p>
-        <p>Item: <span id="item_size"></span></p>
-        <p>Time elapsed: <span id="time_elapsed"></span> seconds</p>
-    </div>
     </div>
 
     </div>

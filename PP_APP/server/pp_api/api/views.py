@@ -55,6 +55,7 @@ def upload_imgs(request):
     """ 1. Check if user exists. If not create a new user.
         2. Retreive the user_id
     """
+    normalized_email = normalized_email.lower()
     try:
         user_id = PPUsers.objects.get(email=normalized_email)
     except PPUsers.DoesNotExist:
@@ -168,7 +169,7 @@ def update_img_post(request):
         packager_inst.score=min(10, (count*avg_score+new_score)/(count+1))
         packager_inst.save()
         
-        return Response({'response':'success'},status=status.HTTP_200_OK)
+        return Response({'response':'success', 'post_id':update_model.pk},status=status.HTTP_200_OK)
     except:
         del_str=' not deleted.'
         if update_model.img_post.delete():
