@@ -2,214 +2,88 @@ const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
 let user_email = document.getElementById('user_email');
 let top_input = document.getElementById('top_img');
 let side_input = document.getElementById('side_img');
-let retailer = ''
-let materials = []
 
-function get_retailer(){
-  var formData = new FormData();
-  formData.append("side_view", side_input.files[0])
-  $.ajax({
-         url : 'http://34.71.6.144/find_retailer',
-         type : 'POST',
-         data : formData,
-         processData: false,  // tell jQuery not to process the data
-         contentType: false,  // tell jQuery not to set contentType
-         crossDomain: true,
+let base_url = window.location.origin;
+let host = window.location.host;
+let pathArray = window.location.pathname.split('/');
 
-         beforeSend: function(data) {
-           //$("#retailer_name").text("Looking for retailer...")
-         },
-         success : function(data) {
-             console.log(data);
-             //alert(data.retailer);
-             retailer = data.retailer
-         },
-         error:function(e){
-           console.log(`${e}`)
-         }
-  });
-}
-
-/*
- * Function called along with TensorFlow that detects materials
- */
-function get_materials() {
-  var formData = new FormData();
-  // NOTE: This function uses the top image to detect the materials
-  // The flask application is written to take side_view
-  // That is why side_view is here, but it actually is sent the top picture
-  formData.append("side_view", top_input.files[0]);
-
-  $.ajax({
-      url : 'http://34.71.6.144/find_materials',
-      type : 'POST',
-      data : formData,
-      processData: false,
-      contentType: false,
-      crossDomain: true,
-
-      // data returns JSON containing boolean of whether one of the four materials
-      // is detected
-      success : function(data) {
-          if (data.has_plastic) {
-            $("#materials").append(" plastic ");
-          }
-
-          if (data.has_paper == true) {
-            $("#materials").append(" paper ");
-          }
-
-          if (data.has_paperboard == true) {
-            $("#materials").append(" paperboard ");
-          }
-
-          if (data.has_cardboard == true) {
-            $("#materials").append(" cardboard ");
-          }
-      },
-
-      error:function(e){
-        console.log(`${e}`)
-      }
-  });
-}
-
-function isEmail(email) {
-    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email);
-}
-function checkIfImageIsInvalid(img){
-  if (img === undefined || !validImageTypes.includes(img['type'])) {
-    return true;
-  }
-  return false;
-}
-// Display image before uploading
-// https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
-function readURL(input, elem_id) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      $('#' + elem_id).attr('style', 'background-image: url(' + e.target.result + ');background-repeat:no-repeat;background-size:cover;color:#fff;background-attachment:scroll;background-position:center;');
-    }
-
-    reader.readAsDataURL(input.files[0]); // convert to base64 string
-  }
-}
+let GV_HOST = "http://34.71.6.144";
+let mrcnn_data;
+let find_retailer_data;
+let find_materials_data;
+let mrcnn_error;
+let gv_req_errors = [];
+// 1 - M-RCNN error, 
+// 2 - FindRetailer error, 
+// 4 - FindMaterials error,
+// 0 - No error
+// Because there is potential race conditions, the error conditions has to check
+// values 1, 2, 3, 4, 5, 6, 7
+let error_enum = 0;
 
 $(document).ready(function () {
     $("#btnSubmit").click(function (event) {
+        
+      //stop submit the form, we will post it manually.
+      event.preventDefault();
 
-        //stop submit the form, we will post it manually.
-        event.preventDefault();
+      // Create an FormData object 
+      let mrcnn_in_data = new FormData();
+      let gv_in_data_top = new FormData();
+      let gv_in_data_side = new FormData();
 
-        // Get form
-        var form = $('#fileUploadForm')[0];
+      // If you want to add an extra field for the FormData
+      mrcnn_in_data.append("packager", "DummyBrand");
+      mrcnn_in_data.append("email", user_email.value);
+      mrcnn_in_data.append("top_img", top_input.files[0]);
+      mrcnn_in_data.append("side_img", side_input.files[0]);
+      
+      gv_in_data_top.append("side_view", top_input.files[0]);
+      gv_in_data_side.append("side_view", side_input.files[0]);
 
-        // Create an FormData object
-        var data = new FormData();
+      if (!isEmail(user_email.value)){
+        PPAlert('Please enter valid email address.');
+        return
+      }
 
-        // If you want to add an extra field for the FormData
-        data.append("packager", "DummyBrand");
-        data.append("email", user_email.value);
-        data.append("top_img", top_input.files[0]);
-        data.append("side_img", side_input.files[0]);
+      if (checkIfImageIsInvalid(top_input.files[0]) || checkIfImageIsInvalid(side_input.files[0])) {
+        PPAlert('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
+        return
+      }
+      // disabled the submit button
+      $("#btnSubmit").prop("disabled", true);
 
-        if (!isEmail(user_email.value)){
-            $("#status").text('Please enter valid email address.');
-            return
-        }
+      // clear previous errors and reset errors
+      gv_req_errors.length = 0;
+      error_enum = 0;
 
-        if (checkIfImageIsInvalid(top_input.files[0]) || checkIfImageIsInvalid(side_input.files[0])) {
-          $("#status").text('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
-          return
-        }
-        // disabled the submit button
-        $("#btnSubmit").prop("disabled", true);
-        let now = 0
-        $.ajax({
-            type: "POST",
-            enctype: 'multipart/form-data',
-            url: "/api/upload",
-            data: data,
-            processData: false,
-            contentType: false,
-            cache: false,
-            timeout: 600000,
-            beforeSend: function (data) {
-                $("#status").text('Inferring...Please wait.');
-                $("#res_img").attr("src", "/static/css/images/loading.gif")
-                $("#post_infer").css("display", "none")
-                $("#outer_size").text("");
-                $("#inner_size").text("");
-                $("#item_size").text("");
-                $("#time_elapsed").text("")
-                now = new Date().getTime();
-                get_retailer();
-                get_materials();
-            },
-            success: function (data) {
-                $("#status").text("");
-                console.log("SUCCESS : ", data);
-                $("#btnSubmit").prop("disabled", false);
-                $("#res_img").attr("src", data.response.infer_img)
-                $("#post_infer").css("display", "block")
-                $("#score").text('6.5/10')
-                $("#outer_size").text(data.response.outer_size)
-                $("#inner_size").text(data.response.inner_size)
-                $("#item_size").text(data.response.item_size)
-                let elapsed = Math.floor(((new Date().getTime() - now) % (1000 * 60)) / 1000)
-                $("#time_elapsed").text(elapsed)
-                $("#retailer").text(retailer)
-                
-                console.log(retailer)
-                email_val = user_email.value
-                // store EMAIL locally so the user doesn't to retype in the email on refresh
-                localStorage.setItem("user_email", email_val);
-                document.getElementById("imageUploadForm").reset();
-                user_email.setAttribute('value', email_val);
-
-                $('#top-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_top.jpg) top left no-repeat;background-size:cover;');
-                $('#side-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_side.jpg) top left no-repeat;background-size:cover;');
-
-            },
-            error: function (e) {
-              $("#status").text(JSON.parse(e.responseText).response);
-                // $("#status").text('Please try again.');
-                $("#btnSubmit").prop("disabled", false);
-                $("#res_img").attr("src", "")
-                email_val = user_email.value
-                localStorage.setItem("user_email", email_val);
-                document.getElementById("imageUploadForm").reset();
-                user_email.setAttribute('value', email_val)
-                $('#top-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_top.jpg) top left no-repeat;background-size:cover;');
-                $('#side-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_side.jpg) top left no-repeat;background-size:cover;');
-            }
-        });
-
+      // asynchronous calls
+      $.when(
+        MaskRCNNInfer(mrcnn_in_data), 
+        FindRetailer(gv_in_data_side), 
+        FindMaterials(gv_in_data_top)).then(
+          reqsSuccess, 
+          reqsFail);
     });
 
     $('#top_img').on('change', function () {
       if (checkIfImageIsInvalid(top_input.files[0])) {
-        $("#status").text('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
+        PPAlert('Please choose valid image from the top view. Supported types are: JPEG, PNG, GIF.');
         return
       }
       readURL(this, $(".top-dropzone").attr("id"));
     })
     $('#side_img').on('change', function () {
       if (checkIfImageIsInvalid(side_input.files[0])) {
-        $("#status").text('Please choose valid images. Supported types are: JPEG, PNG, GIF.');
+        PPAlert('Please choose a valid image that displays the logo. Supported types are: JPEG, PNG, GIF.');
         return
       }
       readURL(this, $(".side-dropzone").attr("id"));
     })
+
 });
 
-
-
-
 // NEW THEME UPDATES BELOW
-
 what_page = document.getElementById("page_name").value;
 (function($) {
   "use strict"; // Start of use strict
@@ -217,7 +91,7 @@ what_page = document.getElementById("page_name").value;
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-      var target = $(this.hash);
+      let target = $(this.hash);
       target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
       if (target.length) {
         $('html, body').animate({
@@ -260,3 +134,164 @@ what_page = document.getElementById("page_name").value;
   }
 
 })(jQuery); // End of use strict
+
+function isEmail(email) {
+  let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}
+function checkIfImageIsInvalid(img) {
+  if (img === undefined || !validImageTypes.includes(img['type'])) {
+    return true;
+  }
+  return false;
+}
+// Display image before uploading
+// https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
+function readURL(input, elem_id) {
+  if (input.files && input.files[0]) {
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      $('#' + elem_id).attr('style', 'background: url(' + e.target.result + ');background-repeat:no-repeat;background-size:cover;color:#fff;background-attachment:scroll;background-position:center;');
+    }
+
+    reader.readAsDataURL(input.files[0]); // convert to base64 string
+  }
+}
+
+function PPAlert(alert_text) {
+  $('.alert').hide();
+  $("#status").text(alert_text);
+  $(".alert").toggle('show');
+}
+
+function MaskRCNNInfer(data) {
+  return $.ajax({
+    type: "POST",
+    enctype: 'multipart/form-data',
+    url: "/api/upload",
+    data: data,
+    processData: false,
+    contentType: false,
+    cache: false,
+    crossDomain: true,
+    // timeout: 600000,
+    beforeSend: function (data) {
+      $(".alert").hide();
+      $("#imageUploadForm").attr("style", "display:none;");
+      $("#res_img").attr("style", "max-height:300px;");
+      $("#res_img").attr("src", "/static/css/images/loading.gif");
+    },
+    success: function (data) {
+      mrcnn_data = data;
+    },
+    error: function (e) {
+      // $("#status").text(JSON.parse(e.responseText).response);
+      mrcnn_error = JSON.parse(e.responseText);
+      error_enum += 1;
+    }
+  });
+}
+
+function FindRetailer(data) {
+  return $.ajax({
+    type: "POST",
+    enctype: 'multipart/form-data',
+    url: GV_HOST+"/find_retailer",
+    data: data,
+    processData: false,
+    contentType: false,
+    cache: false,
+    crossDomain: true,
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
+    },
+    success: function (data) {
+      find_retailer_data = data;
+    },
+    error: function (e) {
+      gv_req_errors.push(e.responseText);
+      error_enum += 2;
+    }
+  });
+}
+
+function FindMaterials(data) {
+  return $.ajax({
+    type: "POST",
+    enctype: 'multipart/form-data',
+    url: GV_HOST + "/find_materials",
+    data: data,
+    processData: false,
+    contentType: false,
+    cache: false,
+    crossDomain: true,
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
+    },
+    success: function (data) {
+      find_materials_data = data;
+    },
+    error: function (e) {
+      gv_req_errors.push(e.responseText);
+      error_enum += 3;
+    }
+  });
+}
+
+function reqsSuccess(){
+  post_id = mrcnn_data.response.post_id;
+  plastic = find_materials_data.has_plastic ? 0 : 1;
+  cardboard = find_materials_data.has_cardboard ? 0 : 1;
+  paper = find_materials_data.has_paper ? 0 : 0.5;
+  paperboard = find_materials_data.has_paperboard ? 0 : 0.5;
+  outer = mrcnn_data.response.outer_size;
+  inner = mrcnn_data.response.inner_size != null ? mrcnn_data.response.inner_size : 1;
+  item = mrcnn_data.response.item_size != null ? mrcnn_data.response.item_size : 0.01;
+
+  // alert(outer + " | " + inner + " | " + item + " | " + plastic + " | " + cardboard + " | " + paper + " | " + paperboard);
+  // alert((item / inner).toPrecision(10) + " | " + (item / outer).toPrecision(10));
+  // alert(5 * (item / inner).toPrecision(10) + " | " + 2 * (item / outer).toPrecision(10));
+
+  score = 5 * (item / inner).toPrecision(10) + 2 * (item / outer).toPrecision(10) + plastic + cardboard + paper + paperboard;
+  let update_form = new FormData();
+  update_form.append("post_id", post_id);
+  update_form.append("packager", find_retailer_data.retailer);
+  update_form.append("materials", JSON.stringify(find_materials_data));
+  update_form.append("score", score);
+
+  $.ajax({
+    type: "PUT",
+    enctype: 'multipart/form-data',
+    url: "/api/update",
+    data: update_form,
+    processData: false,
+    contentType: false,
+    cache: false,
+    success: function (data) {
+      email_val = user_email.value;
+      localStorage.setItem("user_email", email_val);
+      window.location.href = base_url+ "/feed/" + post_id + "/";
+    },
+    error: function (e) {
+      pred_req_errors.push(e.responseText);
+    }
+  });
+}
+
+function reqsFail(errors) {
+  let respText;
+  if(error_enum % 2 == 1){
+    respText = mrcnn_error.response;
+  } else if (error_enum == 2 || error_enum == 6){
+    respText = "Unable to find the retailer. Please try again.";
+  } else {
+    respText = "Unable to detect plastics, carboard and other materials. Please try again.";
+  }
+  PPAlert(respText);
+  $("#btnSubmit").prop("disabled", false);
+  $("#res_img").attr("src", "");
+  $("#res_img").attr("style", "max-height:0px;");
+  $("#imageUploadForm").attr("style", "display:block;");
+  // $('#top-dropzone').attr('style', 'background:url(/static/img/sample_top.png) top left no-repeat;background-size:cover;');
+  // $('#side-dropzone').attr('style', 'background:url(/static/img/sample_side.png) top left no-repeat;background-size:cover;');
+}

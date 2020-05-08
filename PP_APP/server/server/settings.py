@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 GOOGLE_APPLICATION_CREDENTIALS = 'google-vision.json'
 # MASK_RCNN_API_IP = '35.247.98.181' # M-RCNN API CLOUD
@@ -147,10 +147,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATICFILES_DIRS = [
-    'frontend/static',
+    os.path.join(BASE_DIR, "frontend/static/"),
+    MEDIA_ROOT,
 ]
 
-STATIC_URL = '/static/'
+STATIC_ROOT = "/home/USER/static/"
+STATIC_URL = "/static/"
 
 """ DJANGO ResizedImageField """
 
