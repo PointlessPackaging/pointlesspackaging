@@ -9,6 +9,8 @@ from .views import (
     success_view,
     charts_view,
     tables_view,
+    post_view,
+    not_found_404,
 )
 
 app_name = 'frontend'
@@ -23,4 +25,6 @@ urlpatterns = [
     path('success/', success_view, name='success'),
     path('charts/', charts_view, name='charts'),
     path('tables/', tables_view, name='tables'),
+    # /feed/455/
+    path('feed/<int:post_id>/', post_view, name="pp_post"),
 ]

@@ -38,7 +38,7 @@ class ImagePost(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
 
 class PredictedImagePost(models.Model):
-    img_post = models.ForeignKey(ImagePost, on_delete=models.CASCADE)
+    img_post = models.OneToOneField(ImagePost, primary_key=True, on_delete=models.CASCADE)
     packager = models.ForeignKey(Packager, on_delete=models.CASCADE, blank=True, null=True)
     materials = models.CharField(max_length=100, blank=True, null=True)
     score = models.FloatField(blank=True, null=True)
