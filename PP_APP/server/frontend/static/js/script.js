@@ -15,6 +15,7 @@ function get_retailer(){
          processData: false,  // tell jQuery not to process the data
          contentType: false,  // tell jQuery not to set contentType
          crossDomain: true,
+
          beforeSend: function(data) {
            //$("#retailer_name").text("Looking for retailer...")
          },
@@ -26,6 +27,50 @@ function get_retailer(){
          error:function(e){
            console.log(`${e}`)
          }
+  });
+}
+
+/*
+ * Function called along with TensorFlow that detects materials
+ */
+function get_materials() {
+  var formData = new FormData();
+  // NOTE: This function uses the top image to detect the materials
+  // The flask application is written to take side_view
+  // That is why side_view is here, but it actually is sent the top picture
+  formData.append("side_view", top_input.files[0]);
+
+  $.ajax({
+      url : 'http://34.71.6.144/find_materials',
+      type : 'POST',
+      data : formData,
+      processData: false,
+      contentType: false,
+      crossDomain: true,
+
+      // data returns JSON containing boolean of whether one of the four materials
+      // is detected
+      success : function(data) {
+          if (data.has_plastic) {
+            $("#materials").append(" plastic ");
+          }
+
+          if (data.has_paper == true) {
+            $("#materials").append(" paper ");
+          }
+
+          if (data.has_paperboard == true) {
+            $("#materials").append(" paperboard ");
+          }
+
+          if (data.has_cardboard == true) {
+            $("#materials").append(" cardboard ");
+          }
+      },
+
+      error:function(e){
+        console.log(`${e}`)
+      }
   });
 }
 
@@ -51,6 +96,7 @@ function readURL(input, elem_id) {
     reader.readAsDataURL(input.files[0]); // convert to base64 string
   }
 }
+
 $(document).ready(function () {
     $("#btnSubmit").click(function (event) {
 
@@ -89,7 +135,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             cache: false,
-            // timeout: 600000,
+            timeout: 600000,
             beforeSend: function (data) {
                 $("#status").text('Inferring...Please wait.');
                 $("#res_img").attr("src", "/static/css/images/loading.gif")
@@ -100,6 +146,7 @@ $(document).ready(function () {
                 $("#time_elapsed").text("")
                 now = new Date().getTime();
                 get_retailer();
+                get_materials();
             },
             success: function (data) {
                 $("#status").text("");
@@ -114,13 +161,13 @@ $(document).ready(function () {
                 let elapsed = Math.floor(((new Date().getTime() - now) % (1000 * 60)) / 1000)
                 $("#time_elapsed").text(elapsed)
                 $("#retailer").text(retailer)
+                
                 console.log(retailer)
                 email_val = user_email.value
                 // store EMAIL locally so the user doesn't to retype in the email on refresh
                 localStorage.setItem("user_email", email_val);
                 document.getElementById("imageUploadForm").reset();
                 user_email.setAttribute('value', email_val);
-
 
                 $('#top-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_top.jpg) top left no-repeat;background-size:cover;');
                 $('#side-dropzone').attr('style', 'background:linear-gradient(to bottom, rgba(22, 22, 22, 0.5) 0%, rgba(22, 22, 22, 0.8) 80%, #0000008a 100%), url(/static/img/sample_side.jpg) top left no-repeat;background-size:cover;');
@@ -156,8 +203,10 @@ $(document).ready(function () {
       }
       readURL(this, $(".side-dropzone").attr("id"));
     })
-
 });
+
+
+
 
 // NEW THEME UPDATES BELOW
 
