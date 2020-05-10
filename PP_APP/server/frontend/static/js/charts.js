@@ -41,40 +41,40 @@ $(document).ready(function () {
 	})
 
 	function setChart() {
-		var ctx1 = document.getElementById("myChart1");
+// 		var ctx1 = document.getElementById("myChart1");
 		var ctx2 = document.getElementById("myChart2");
 		var ctx3 = document.getElementById("myChart3");
 		var ctx4 = document.getElementById("myChart4");
 
-		var myChart1 = new Chart(ctx1, {
-			type: 'polarArea',
-			data: {
-				labels: packagersData,
-				datasets: [{
-					label: '# of Pointless Packaging',
-					data: packagersCountData,
-					backgroundColor: backgroundColor,
-					borderColor: borderColor,
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					yAxes: [{
-						ticks: {
-							beginAtZero: true
-						}
-					}]
-				}
-			}
-		});
+// 		var myChart1 = new Chart(ctx1, {
+// 			type: 'polarArea',
+// 			data: {
+// 				labels: packagersData,
+// 				datasets: [{
+// 					label: '# of Pointless Packaging',
+// 					data: packagersCountData,
+// 					backgroundColor: backgroundColor,
+// 					borderColor: borderColor,
+// 					borderWidth: 1
+// 				}]
+// 			},
+// 			options: {
+// 				scales: {
+// 					yAxes: [{
+// 						ticks: {
+// 							beginAtZero: true
+// 						}
+// 					}]
+// 				}
+// 			}
+// 		});
 
-		var myChart = new Chart(ctx2, {
+		var myChart2 = new Chart(ctx2, {
 			type: 'horizontalBar',
 			data: {
 				labels: packagersData,
 				datasets: [{
-					label: '# of Pointless Packaging',
+					label: 'Number of Submission',
 					data: packagersCountData,
 					backgroundColor: backgroundColor,
 					borderColor: borderColor,
@@ -97,7 +97,7 @@ $(document).ready(function () {
 			data: {
 				labels: monthsData,
 				datasets: [{
-					label: '# of Pointless Packaging',
+					label: 'Number of Submission',
 					data: monthsCountData,
 					backgroundColor: backgroundColor,
 					borderColor: borderColor,
@@ -120,7 +120,7 @@ $(document).ready(function () {
 			data: {
 				labels: plasticData,
 				datasets: [{
-					label: '# of Pointless Packaging',
+					label: 'Number of Submission',
 					data: plasticCountData,
 					backgroundColor: backgroundColor,
 					borderColor: borderColor,

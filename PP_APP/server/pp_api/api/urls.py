@@ -11,6 +11,7 @@ from pp_api.api.views import (
     top_five_worst_view,
     ChartData,
     TableData,
+    RankData,
 )
 
 app_name = 'pp_api'
@@ -27,4 +28,5 @@ urlpatterns = [
     # path('delete', delete_post, name='delete'),
     path('chart_data/', ChartData.as_view()),
     path('table_data/', TableData.as_view()),
+    path('rank_data/', RankData.as_view()),
 ]
