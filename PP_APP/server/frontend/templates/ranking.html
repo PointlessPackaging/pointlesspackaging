@@ -1,13 +1,86 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
 <section id="about" class="about-section bg-light">
-    <div class="container">
-
-        <!-- PAGE CONTENT GOES IN HERE -->
-
-    </div>
+   <div class="container">
+      <h1 class="h3 mb-2 text-gray-800">Quick Stats</h1>
+      <!-- Content Row -->
+      <div class="row">
+         <!-- Time Chart -->
+         <div class="p-3">
+            <div class="card shadow">
+               <div class="card-body">
+                  <div class="chart-area">
+                     <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart3" width="1043" height="200" style="display: block; height: 244px; width: 580px;"></canvas>
+                  </div>
+                  <hr>
+                  <p style="color:gray;"><small>Shows the Amount of pointless packaging images' submission in this year.</small></p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="row mb-4">
+         <!-- Company Chart -->
+         <div class="col mb-6">
+            <div class="card shadow">
+               <div class="card-body">
+                  <div class="chart-area">
+                     <canvas id="myChart2"></canvas>
+                  </div>
+                  <hr>
+                  <p style="color:gray;"><small>Shows the submission of the packagers with top scores.</small></p>
+               </div>
+            </div>
+         </div>
+         <!-- Contain Chart -->
+         <div class="col mb-6">
+            <div class="card shadow">
+               <!-- Card Body -->
+               <div class="card-body">
+                  <div class="chart-pie">
+                     <canvas id="myChart4"></canvas>
+                  </div>
+                  <hr>
+                  <p style="color:gray;"><small>Shows the percentage of the submissions that contain plastic material.</small></p>
+               </div>
+            </div>
+         </div>
+      </div>
+      <h1 class="h3 text-gray-800" style="margin-bottom: 1em; margin-top: 2em">All Packagers</h1>
+      <div class="container">
+      <div class="row">
+         <div class="col-sm-12">
+            <table id="rank" class="table table-striped table-bordered" style="width:100%">
+               <thead>
+                  <tr>
+                     <th data-data="brand_name">Brand Name</th>
+                     <th data-data="score">Score</th>
+                     <th data-data="count">Submission</th>
+                  </tr>
+               </thead>
+            </table>
+         </div>
+      </div>
+      </div>
+   </div>
+   <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+   <script src="http://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+   <script>
+      $(document).ready(function() {
+          $('#rank').DataTable({
+              'serverSide': true,
+              'ajax': '/api/rank_data/?format=datatables',
+              'columns': [
+                  {'data': 'brand_name'},
+                  {'data': 'score'},
+                  {'data': 'count'},
+              ]
+          });
+      });
+   </script>
+   <!-- Chart Plugin JavaScript -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0" defer></script>
+   <script src="{% static "js/charts.js" %}" defer></script>
+   <script src="{% static "js/tables.js" %}" defer></script>
 </section>
-
 {% endblock content %}
