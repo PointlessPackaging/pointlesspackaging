@@ -74,7 +74,7 @@ $(document).ready(function () {
 			data: {
 				labels: packagersData,
 				datasets: [{
-					label: 'Number of Submission',
+					label: 'Number of Submissions',
 					data: packagersCountData,
 					backgroundColor: backgroundColor,
 					borderColor: borderColor,
@@ -97,7 +97,7 @@ $(document).ready(function () {
 			data: {
 				labels: monthsData,
 				datasets: [{
-					label: 'Number of Submission',
+					label: 'Number of Submissions',
 					data: monthsCountData,
 					backgroundColor: backgroundColor,
 					borderColor: borderColor,
@@ -120,7 +120,7 @@ $(document).ready(function () {
 			data: {
 				labels: plasticData,
 				datasets: [{
-					label: 'Number of Submission',
+					label: 'Number of Submissions',
 					data: plasticCountData,
 					backgroundColor: backgroundColor,
 					borderColor: borderColor,

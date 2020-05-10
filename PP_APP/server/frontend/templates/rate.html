@@ -1,60 +1,92 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
 <section id="about" class="about-section bg-light">
-    <div class="container">
-
-    <div class="alert alert-danger alert-dismissible collapse" role="alert">
-        <p id="status"></p>
-        <button type="button" class="close" onclick="$('.alert').hide()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <img src="" id="res_img" class="rounded mx-auto d-block" style="max-height:0px;">
-    <form id="imageUploadForm" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <div class="row">
-            <div class="col-sm">
-                <label id="top-dropzone" class="dropzone top-dropzone" style="background: url({% static 'img/sample_top.png' %}) top left no-repeat;background-size:cover;">                    
-                    <div class="text-dropzone text-center align-middle">
-                        <h2>TOP VIEW</h2>
-                        <p>(Click OR Drag and Drop)</p>
-                    </div>
-                    <input type="file" hidden id="top_img" required>
-                </label>
+   <div class="container">
+   <div class="row welcome text-center">
+      <div class="col-12">
+         <h1 class="display-8 mb-4">How to Rate Your Package?</h1>
+      </div>
+      <hr>
+   </div>
+   <div class="row">
+      <div class="col-sm">
+         <div class="card mb-5" style="border-color:transparent">
+            <div class="card-body">
+               <h2 class="card-title">Step 1.</h2>
+               <p class="card-text">Take a picture from the TOP of your package.</p>
             </div>
-            <div class="col-sm">
-                <label id="side-dropzone" class="dropzone side-dropzone" style="background: url({% static 'img/sample_side.png' %}) top left no-repeat;background-size:cover;">
-                    <div class="text-center align-middle">
-                        <div class="text-dropzone text-align-center">
-                            <h2>LOGO VIEW</h2>
-                            <p>(Click OR Drag and Drop)</p>
-                        </div>
-                    </div>
-                    <input type="file" hidden id="side_img" required>
-                </label>
+            <img class="card-img-top" src="{% static 'img/sample_top.png' %}" height="250">
+         </div>
+      </div>
+      <div class="col-sm">
+         <div class="card mb-5" style="border-color:transparent">
+            <div class="card-body">
+               <h2 class="card-title">Step 2.</h2>
+               <p class="card-text">Take a picture of the LOGO of your package.</p>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="exampleInputEmail1">Your Email</label>
-            <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp"
-                placeholder="Enter your email address"  required>
-            <small id="emailHelp" class="form-text text-muted">This cannot be empty.</small>
-        </div>
-
-        <div class="row">
-            <div class="col justify-content-center">
-                <input type="submit" id="btnSubmit" name="submit" value="Rate My Package!" class="btn btn-primary btn-lg">
+            <img class="card-img-top" src="{% static 'img/sample_side.png' %}" height="250">
+         </div>
+      </div>
+      <div class="col-sm">
+         <div class="card mb-5" style="border-color:transparent">
+            <div class="card-body">
+               <h2 class="card-title">Step 3.</h2>
+               <p class="card-text">Click submit and you will receive your result and score!</p>
             </div>
-        </div>
-    </form>
-    </div>
-
-    </div>
+            <img class="card-img-top" src="{% static 'img/fig.png' %}" height="250">
+         </div>
+      </div>
+   </div>
+   <div class="alert alert-danger alert-dismissible collapse" role="alert">
+      <p id="status"></p>
+      <button type="button" class="close" onclick="$('.alert').hide()">
+      <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <img src="" id="res_img" class="rounded mx-auto d-block" style="max-height:0px;">
+   <form id="imageUploadForm" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row text-center">
+         <div class="col-12">
+            <h4 class="display-8 mb-4">Start Here:</h4>
+         </div>
+         <hr>
+         <p></p>
+      </div>
+      <div class="row">
+         <div class="col-md-6">
+            <label id="top-dropzone" class="dropzone top-dropzone" style="background: gray; top left no-repeat; background-size:cover;">
+               <div class="text-dropzone text-center align-middle">
+                  <h2>TOP VIEW</h2>
+                  <p>(Click OR Drag and Drop)</p>
+               </div>
+               <input type="file" hidden id="top_img" required>
+            </label>
+         </div>
+         <div class="col-md-6">
+            <label id="side-dropzone" class="dropzone side-dropzone" style="background: gray; top left no-repeat; background-size:cover;">
+               <div class="text-center align-middle">
+                  <div class="text-dropzone text-align-center">
+                     <h2>LOGO VIEW</h2>
+                     <p>(Click OR Drag and Drop)</p>
+                  </div>
+               </div>
+               <input type="file" hidden id="side_img" required>
+            </label>
+         </div>
+      </div>
+      <div class="form-group">
+         <label for="exampleInputEmail1">Your Email</label>
+         <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp"
+            placeholder="Enter your email address"  required>
+         <small id="emailHelp" class="form-text text-muted">This cannot be empty.</small>
+      </div>
+      <div class="row">
+         <div class="col justify-content-center">
+            <input type="submit" id="btnSubmit" name="submit" value="Rate My Package!" class="btn btn-primary btn-lg">
+         </div>
+      </div>
+   </form>
 </section>
-
 {% endblock content %}
