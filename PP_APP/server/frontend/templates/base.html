@@ -55,87 +55,58 @@
             <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-               <ul class="navbar-nav ml-auto">
-                  <li class="nav-item">
-                     <a class="nav-link js-scroll-trigger" href="/rate">Rate My Package</a>
-                  </li>
-                  <li class="nav-item">
-                     <a class="nav-link js-scroll-trigger" href="/feed">Feed</a>
-                  </li>
-                  <li class="nav-item">
-                     <a class="nav-link js-scroll-trigger" href="/ranking">Ranking</a>
-                  </li>
-                  <li class="nav-item">
-                     <a class="nav-link js-scroll-trigger" href="/about">About</a>
-                  </li>
-                  <li class="nav-item">
-                     <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
-                  </li>
-               </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/rate">Rate!</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/feed">Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/ranking">Ranking</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/about">About</a>
+                    </li>
+                </ul>
             </div>
-         </div>
-      </nav>
-      <!-- DJANGO BASE TEMPLATE TEMPORARILY ENDS HERE -->
-      {% block content %}
-      <!-- PAGE CONTENT GOES HERE -->
-      {% endblock %}
-      <!-- DJANGO BASE TEMPLATE STARTS HERE -->
-      <!-- Contact Section -->
-      <section class="contact-section bg-black">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-4 mb-3 mb-md-0">
-                  <div class="card py-4 h-100">
-                     <div class="card-body text-center">
-                        <i class="fas fa-map-marked-alt text-primary mb-2"></i>
-                        <h4 class="text-uppercase m-0">Address</h4>
-                        <hr class="my-4">
-                        <div class="small text-black-50">4923 Market Street, Orlando FL</div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 mb-3 mb-md-0">
-                  <div class="card py-4 h-100">
-                     <div class="card-body text-center">
-                        <i class="fas fa-envelope text-primary mb-2"></i>
-                        <h4 class="text-uppercase m-0">Email</h4>
-                        <hr class="my-4">
-                        <div class="small text-black-50">
-                           <a href="#">hello@yourdomain.com</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-4 mb-3 mb-md-0">
-                  <div class="card py-4 h-100">
-                     <div class="card-body text-center">
-                        <i class="fas fa-mobile-alt text-primary mb-2"></i>
-                        <h4 class="text-uppercase m-0">Phone</h4>
-                        <hr class="my-4">
-                        <div class="small text-black-50">+1 (555) 902-8832</div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="social d-flex justify-content-center">
-               <a href="#" class="mx-2">
-               <i class="fab fa-twitter"></i>
-               </a>
-               <a href="#" class="mx-2">
-               <i class="fab fa-facebook-f"></i>
-               </a>
-               <a href="https://github.com/kennylee9672/ECS193A" class="mx-2">
-               <i class="fab fa-github"></i>
-               </a>
-            </div>
-         </div>
-      </section>
-      <!-- Footer -->
-      <footer class="bg-black small text-center text-white-50">
-         <div class="container">
-            Copyright &copy; Pointless Packaging 2020
-         </div>
-      </footer>
-      <input type="hidden" id="page_name" name="custId" value="{{page_name}}">
-   </body>
+        </div>
+    </nav>
+
+    <!-- DJANGO BASE TEMPLATE TEMPORARILY ENDS HERE -->
+    {% block content %}
+
+    <!-- PAGE CONTENT GOES HERE -->
+
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="bg-black small text-center text-white-50">
+        <div class="container">
+          <div class="social justify-content-center py-2 ">
+            <a class="about-link px-4" target="_blank" href="https://github.com/kennylee9672/ECS193A">
+              <i class="fab fa-github fa-4x"></i>
+            </a>
+            <a class="about-link px-4" target="_blank" href="https://twitter.com">
+              <i class="fab fa-twitter fa-4x"></i>
+            </a>
+            <a class="about-link px-4" target="_blank" href="https://instagram.com">
+              <i class="fab fa-instagram fa-4x"></i>
+            </a>
+            <a class="about-link px-4" target="_blank" href="mailto: eppecs193@gmail.com">
+              <i class="fa fa-envelope fa-4x"></i>
+            </a>
+          </div>
+          <div class="py-4">
+              Copyright &copy; Pointless Packaging 2020
+          </div>
+        </div>
+    </footer>
+
+    <input type="hidden" id="page_name" name="custId" value="{{page_name}}">
+    <!-- Chart Plugin JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0" defer></script>
+    <script src="{% static "js/charts.js" %}" defer></script>
+    <script src="{% static "js/tables.js" %}" defer></script>
+</body>
 </html>
