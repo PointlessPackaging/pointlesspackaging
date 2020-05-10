@@ -427,3 +427,7 @@ background-image: linear-gradient(315deg, #29539b 0%, #2a74ff 74%);
 .about-link {
   color: rgba(255,255,255,0.80);
 }
+
+.black-par  {
+  font-size: 14pt;
+}
