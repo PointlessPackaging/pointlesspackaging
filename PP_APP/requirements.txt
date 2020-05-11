@@ -64,3 +64,5 @@ urllib3==1.25.8
 Werkzeug==1.0.1
 wrapt==1.12.1
 djangorestframework-datatables==0.5.2
+django-mathfilters==1.0.0
+django-social-share==1.4.0

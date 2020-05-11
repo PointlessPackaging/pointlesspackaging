@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'pp_api',
     'accounts',
-    'frontend'
+    'frontend',
+    'mathfilters',
+    'django_social_share',
 ]
 
 REST_FRAMEWORK = {
