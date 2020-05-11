@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mathfilters %}
+{% load social_share %}
+{% block content %}
+<section id="about" class="about-section bg-light">
+   <div class="container">
+      <div class="row">
+         <ul class="navbar-nav ml-auto">
+            <li class="nav-item ml-auto">
+               <!--Facebook-->
+               <a class="fb-ic mr-3" role="button" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+               <i class="fab fa-lg fa-facebook-f"></i>
+               </a>
+               <!--Twitter-->
+               <a class="tw-ic mr-3" role="button" href="https://twitter.com/intent/tweet?text={{ request.build_absolute_uri }}" target="_blank">
+               <i class="fab fa-lg fa-twitter"></i>
+               </a>
+               <!--Linkedin-->
+               <a class="li-ic mr-3" role="button" href="https://www.linkedin.com/shareArticle?mini=true&title=PointlessPackaging&url={{ request.build_absolute_uri }}" target="_blank">
+               <i class="fab fa-lg fa-linkedin-in"></i>
+               </a>
+               <!--Email-->
+               <a class="email-ic mr-3" role="button" href="mailto:?subject=Pointless%20Packaging&body={{ request.build_absolute_uri }}" target="_blank">
+               <i class="far fa-lg fa-envelope"></i>
+               </a>
+            </li>
+         </ul>
+      </div>
+      {% for key in pp_post %}
+      <h1>POST #{{ key.img_post.id }}</h1>
+      {% post_to_facebook "Post ID: {{key.img_post.id}}. Check it out!" key.get_absolute_url %}
+      <div class="row">
+         <div class="col-md-4">
+            <div class="card mb-3 bg-transparent" style="font-size: 80px; text-align: center;">
+               <div class="card-body">
+                  <p class="card-title">{{ key.score|stringformat:".1f" }}/10</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-8">
+            <table class="table">
+               <tr>
+                  <th>Packager</th>
+                  <td>{{ key.packager.brand_name }}</td>
+               </tr>
+               <tr>
+                  <th>Materials</th>
+                  <td>{{ key.materials }}</td>
+               </tr>
+               <tr>
+                  <th>Space Used by Item</th>
+                  <td>{{ key.item_size|div:key.inner_size|mul:100|stringformat:".1f" }}%</td>
+               </tr>
+               <tr>
+                  <th>Date</th>
+                  <td>{{ key.img_post.date_posted }}</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-6">
+            <div class="card">
+               <h5 class="card-header">Original</h5>
+               <img class="card-img-top" src="../../media/{{ key.img_post.top_img }}" height={{ width }}>
+               <div class="card-footer" style="color: gray;">
+                  Shows the top image uploaded by user.
+               </div>
+            </div>
+         </div>
+         <div class="col-md-6">
+            <div class="card">
+               <h5 class="card-header">Inferred</h5>
+               {% if key.img_post.infer_img %}
+               <img class="card-img-top" src="../../media/{{ key.img_post.infer_img }}" height={{ width }}>
+               {% else %}
+               <img class="card-img-top" src="../../media/{{ key.img_post.top_img }}" height={{ width }}>
+               {% endif %}
+               <div class="card-footer" style="color: gray;">
+                  Shows the infer image after detection.
+               </div>
+            </div>
+         </div>
+      </div>
+      {% endfor %}
+      <div class="row">
+         <ul class="navbar-nav ml-auto">
+            <li class="nav-item ml-auto">
+               <a class="nav-link active ml-aut" href="/rate">
+                  <h5 style="margin-top: 2rem; text-decoration: underline;">Rate Another Package</h5>
+               </a>
+            </li>
+         </ul>
+      </div>
+   </div>
+</section>
+{% endblock content %}

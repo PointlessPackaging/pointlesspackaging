@@ -41,8 +41,13 @@ def tables_view(request, *args, **kwargs):
 
 def post_view(request, post_id):
     pp_post = get_list_or_404(PredictedImagePost, pk=post_id)
-    context = {'title': 'Post #' + str(post_id), 'page_name': 'post', 'pp_post': pp_post}
-    return render(request, 'post_view.html', context)
+    context = {
+        'title': 'Post #' + str(post_id),
+        'page_name': 'post',
+        'pp_post': pp_post,
+        'meta_img': pp_post[0].img_post.infer_img,
+    }
+    return render(request, 'post.html', context)
 
 
 def not_found_404(request, exception):
