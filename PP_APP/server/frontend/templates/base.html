@@ -7,11 +7,21 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta name="description" content="">
       <meta name="author" content="">
+
       <meta property="og:url"           content="{{ request.build_absolute_uri }}" />
       <meta property="og:type"          content="website" />
       <meta property="og:title"         content="{{ title }} - PointlessPackaging" />
-      <meta property="og:description"   content="Eliminate pointless packaging!" />
-      <meta property="og:image"         content="{{ meta_img }}" />
+      <meta property="og:description"   content="Eliminate pointless packaging using computer vision. Help end the poor packaging practices of companies, save the environment!" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="{{ title }} - PointlessPackaging" />
+      <meta name="twitter:url" content="{{ request.build_absolute_uri }}" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:description"
+        content="Eliminate pointless packaging using computer vision. Help end the poor packaging practices of companies, save the environment!" />
+      {% if meta_img %}
+      <meta property="twitter:image"    content="http://{{request.get_host}}/media/{{ meta_img }}" />
+      <meta property="og:image"         content="http://{{request.get_host}}/media/{{ meta_img }}" />
+      {% endif %}
 
       <title> {{ title }} | Pointless Packaging</title>
 
@@ -31,9 +41,6 @@
 
        <!-- Plugin JavaScript -->
       <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}" defer></script>
-
-       <!-- Chart - Bootstrap Optional Theme -->
-      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
 
        <!-- DataTable - Bootstrap Optional Theme -->
       <link rel="stylesheet" href="http://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">

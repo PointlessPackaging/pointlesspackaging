@@ -123,7 +123,6 @@ def update_img_post(request):
     request: (post_id, packager, materials, score)
     """
     """ Retreive the post by post_id """
-    return Response({'response': 'We have got a problem'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         update_model = PredictedImagePost.objects.get(img_post=request.data.get('post_id'))
     except PredictedImagePost.DoesNotExist:
