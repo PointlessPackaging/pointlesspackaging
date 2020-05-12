@@ -3,49 +3,75 @@
 {% block content %}
 <section id="about" class="about-section bg-light">
    <div class="container">
-   <div class="row welcome text-center">
-      <div class="col-12">
-         <h1 class="display-8 mb-4">How to Rate Your Package?</h1>
-      </div>
-      <hr>
-   </div>
-   <div class="row">
-      <div class="col-sm">
-         <div class="card mb-5" style="border-color:transparent">
-            <div class="card-body">
-               <h2 class="card-title">Step 1.</h2>
-               <p class="card-text">Take a picture from the TOP of your package.</p>
-            </div>
-            <img class="card-img-top" src="{% static 'img/sample_top.png' %}" height="250">
-         </div>
-      </div>
-      <div class="col-sm">
-         <div class="card mb-5" style="border-color:transparent">
-            <div class="card-body">
-               <h2 class="card-title">Step 2.</h2>
-               <p class="card-text">Take a picture of the LOGO of your package.</p>
-            </div>
-            <img class="card-img-top" src="{% static 'img/sample_side.png' %}" height="250">
-         </div>
-      </div>
-      <div class="col-sm">
-         <div class="card mb-5" style="border-color:transparent">
-            <div class="card-body">
-               <h2 class="card-title">Step 3.</h2>
-               <p class="card-text">Click submit and you will receive your result and score!</p>
-            </div>
-            <img class="card-img-top" src="{% static 'img/fig.png' %}" height="250">
-         </div>
-      </div>
-   </div>
    <div class="alert alert-danger alert-dismissible collapse" role="alert">
       <p id="status"></p>
       <button type="button" class="close" onclick="$('.alert').hide()">
-      <span aria-hidden="true">&times;</span>
+         <span aria-hidden="true">&times;</span>
       </button>
    </div>
-   <img src="" id="res_img" class="rounded mx-auto d-block" style="max-height:0px;">
+   <!-- <h2 class="align-items-center text-center">&nbsp;</h2> -->
+   <!-- <div class="row welcome text-center">
+      <div class="col-12">
+         <h1 class="display-8 mb-4">How to get your package rated?</h1>
+      </div>
+      <hr>
+   </div> -->
+   <div id="res_div" class = "row" style="display: none;height: 0px;">
+      <h1 class="align-items-center text-center">&nbsp;</h1>
+      <h2 class="align-items-center text-center text-black-70">Please wait...We are calculating...</h2>
+      <img src="" id="res_img" class="rounded mx-auto d-block" style="height: 300px;">
+      <h2 class="align-items-center text-center text-black-70">Estimated time: ~20 seconds.</h2>
+   </div>
    <form id="imageUploadForm" method="post" enctype="multipart/form-data">
+      <a id = "whats_this_id" class="text-black-100 black-par" data-toggle="collapse" href="#whats_this" role="button" aria-expanded="false"
+         aria-controls="whats_this">
+         + How does it work?
+      </a>
+      <div id="whats_this" class="collapse">
+         <div class="custom_card card-body">
+            <p>
+               Online retailers in particular are notorious for sending your items wrapped in wasteful packaging. How can we
+               get them to stop? By <strong>pressuring</strong> them of course!
+            </p>
+            <p>
+               But how can <strong>I</strong> help you ask? Grab ahold of any packaging you have received and follow the steps below.
+            </p>
+            <p>
+               We will use state of the art computer vision and machine learning techniques to give a rating to your package.
+            </p>
+         </div>
+         <h4 class="align-items-center text-center">&nbsp;</h4>
+         <div class="row">
+            <div class="col-sm">
+               <div class="card mb-5" style="border-color:transparent">
+                  <div class="card-body">
+                     <h2 class="card-title">Step 1.</h2>
+                     <p class="card-text">Take a picture from the TOP of your package.</p>
+                  </div>
+                  <img class="card-img-top" src="{% static 'img/sample_top.png' %}" height="250">
+               </div>
+            </div>
+            <div class="col-sm">
+               <div class="card mb-5" style="border-color:transparent">
+                  <div class="card-body">
+                     <h2 class="card-title">Step 2.</h2>
+                     <p class="card-text">Take a picture of the LOGO or the company name on your package.</p>
+                  </div>
+                  <img class="card-img-top" src="{% static 'img/sample_side.png' %}" height="250">
+               </div>
+            </div>
+            <div class="col-sm">
+               <div class="card mb-5" style="border-color:transparent">
+                  <div class="card-body">
+                     <h2 class="card-title">Step 3.</h2>
+                     <p class="card-text">Click submit and once you obtain the score, <strong>share it on social
+                           media!</strong></p>
+                  </div>
+                  <img class="card-img-top" src="{% static 'img/fig.png' %}" height="250">
+               </div>
+            </div>
+         </div>
+      </div>
       {% csrf_token %}
       <div class="row text-center">
          <div class="col-12">

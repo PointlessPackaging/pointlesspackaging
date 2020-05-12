@@ -5,31 +5,31 @@
 {% block content %}
 <section id="about" class="about-section bg-light">
    <div class="container">
+      {% for key in pp_post %}
       <div class="row">
          <ul class="navbar-nav ml-auto">
             <li class="nav-item ml-auto">
+               <strong style="font-size:1.2rem;">Share: </strong>
                <!--Facebook-->
                <a class="fb-ic mr-3" role="button" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
                <i class="fab fa-lg fa-facebook-f"></i>
                </a>
                <!--Twitter-->
-               <a class="tw-ic mr-3" role="button" href="https://twitter.com/intent/tweet?text={{ request.build_absolute_uri }}" target="_blank">
+               <a class="tw-ic mr-3" role="button" href="https://twitter.com/intent/tweet?text=Post%20%23{{key.img_post.id}}%20-%20%20Pointless%20Packaging%0A{{ request.build_absolute_uri }}" target="_blank">
                <i class="fab fa-lg fa-twitter"></i>
                </a>
                <!--Linkedin-->
-               <a class="li-ic mr-3" role="button" href="https://www.linkedin.com/shareArticle?mini=true&title=PointlessPackaging&url={{ request.build_absolute_uri }}" target="_blank">
+               <a class="li-ic mr-3" role="button" href="https://www.linkedin.com/shareArticle?mini=true&title=Post%20%23{{ key.img_post.id }}%20-%20%20Pointless%20Packaging&url={{ request.build_absolute_uri }}" target="_blank">
                <i class="fab fa-lg fa-linkedin-in"></i>
                </a>
                <!--Email-->
-               <a class="email-ic mr-3" role="button" href="mailto:?subject=Pointless%20Packaging&body={{ request.build_absolute_uri }}" target="_blank">
+               <a class="email-ic mr-3" role="button" href="mailto:?subject=Pointless%20Packaging&body=Post%20%23{{ key.img_post.id }}%20-%20%20Pointless%20Packaging%0A{{ request.build_absolute_uri }}" target="_blank">
                <i class="far fa-lg fa-envelope"></i>
                </a>
             </li>
          </ul>
       </div>
-      {% for key in pp_post %}
       <h1>POST #{{ key.img_post.id }}</h1>
-      {% post_to_facebook "Post ID: {{key.img_post.id}}. Check it out!" key.get_absolute_url %}
       <div class="row">
          <div class="col-md-4">
             <div class="card mb-3 bg-transparent" style="font-size: 80px; text-align: center;">
@@ -46,7 +46,8 @@
                </tr>
                <tr>
                   <th>Materials</th>
-                  <td>{{ key.materials }}</td>
+                  <td id="material_key"></td>
+                  <input type="hidden" id="mat_val" value="{{ key.materials }}">
                </tr>
                <tr>
                   <th>Space Used by Item</th>
@@ -65,7 +66,7 @@
                <h5 class="card-header">Original</h5>
                <img class="card-img-top" src="../../media/{{ key.img_post.top_img }}" height={{ width }}>
                <div class="card-footer" style="color: gray;">
-                  Shows the top image uploaded by user.
+                  The image you posted.
                </div>
             </div>
          </div>
@@ -78,7 +79,7 @@
                <img class="card-img-top" src="../../media/{{ key.img_post.top_img }}" height={{ width }}>
                {% endif %}
                <div class="card-footer" style="color: gray;">
-                  Shows the infer image after detection.
+                  What we detected from your image.
                </div>
             </div>
          </div>
@@ -95,4 +96,29 @@
       </div>
    </div>
 </section>
+<script>
+$(function(){
+   try {
+      let parse_txt = JSON.parse($("#mat_val").val());
+      let f_arr = [];
+      let f_txt = "";
+      if (parse_txt.has_plastic) {
+         f_arr.push("plastic");
+      }
+      if (parse_txt.has_cardboard || parse_txt.has_paperboard) {
+         f_arr.push("cardboard");
+      }
+      if (parse_txt.has_paper) {
+         f_arr.push("paper");
+      }
+      let i = 0;
+      for (i = 0; i < f_arr.length - 1; i++) {
+         f_txt.concat(f_arr[i] + ",")
+      }
+      $("#material_key").text(f_arr.toString());
+   } catch (e){
+      $("#material_key").text($("#mat_val").val());
+   }
+});
+</script>
 {% endblock content %}

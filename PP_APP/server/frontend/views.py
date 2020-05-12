@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_list_or_404
+from django.views.generic.list import ListView
 from pp_api.models import ImagePost, PredictedImagePost, Packager, PPUsers
 
 
@@ -11,9 +12,39 @@ def rate_view(request):
     return render(request, 'rate.html', {'title': 'Rate', 'page_name': 'rate'})
 
 
-def feed_view(request):
-    return render(request, 'feed.html', {'title': 'Feed', 'page_name': 'feed'})
+class FeedView(ListView):
+    model = PredictedImagePost
+    paginate_by = 3
+    context_object_name = 'feed'
+    template_name = 'feed.html'
+    ordering = ['-img_post__date_posted']
 
+    def get_queryset(self):
+        query = self.request.GET.get('packager')
+        if query:
+            bad_chars = [';', ':', '!', '*', '?',''] 
+            query=''.join(i for i in query if not i in bad_chars)
+            query = query.strip().replace(" ", "").lower()
+            object_list = self.model.objects.filter(packager__name__istartswith=query).order_by('-img_post__date_posted')
+        else:
+            object_list = self.model.objects.all().order_by('-img_post__date_posted')
+        return object_list
+
+    def get_context_data(self,**kwargs):
+        context = super(FeedView,self).get_context_data(**kwargs)
+        query=self.request.GET.get('packager')
+        if query:
+            bad_chars = [';', ':', '!', '*', '?',''] 
+            query=''.join(i for i in query if not i in bad_chars)
+            context['packager']=str(query)
+            context['search_success']=True
+        else:
+            context['packager']=None
+            context['search_success']=None
+        context['title']='Feed'
+        context['page_name']='feed'
+        return context
+    
 
 def ranking_view(request):
     return render(request, 'ranking.html', {'title': 'Ranking', 'page_name': 'ranking'})

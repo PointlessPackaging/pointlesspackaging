@@ -22,10 +22,27 @@ let gv_req_errors = [];
 let error_enum = 0;
 
 $(document).ready(function () {
+
+  $("#whats_this_id").click(function(event){
+    if($("#whats_this").hasClass("show")){
+      localStorage.setItem("whats_this", 0);
+      $("#whats_this_id").text($("#whats_this_id").text().replace("-", "+"));
+    } else {
+      localStorage.setItem("whats_this", 1);
+      // $("#whats_this_id").text("- What is it and how does it work?");
+      $("#whats_this_id").text($("#whats_this_id").text().replace("+", "-"));
+    }
+  });
+    
     $("#btnSubmit").click(function (event) {
         
       //stop submit the form, we will post it manually.
       event.preventDefault();
+
+      // collapse whats_this and scroll upto top
+      $("#whats_this").collapse('hide');
+      $("#whats_this_id").text($("#whats_this_id").text().replace("-", "+"));
+      window.scrollTo(0, 0); 
 
       // Create an FormData object 
       let mrcnn_in_data = new FormData();
@@ -117,10 +134,10 @@ what_page = document.getElementById("page_name").value;
   var navbarCollapse = function() {
     if ($("#mainNav").offset().top > 100) {
       $("#mainNav").addClass("navbar-shrink");
-      $("#mainNav").addClass("mainNav-bg");
+      // $("#mainNav").addClass("mainNav-bg");
     } else {
       $("#mainNav").removeClass("navbar-shrink");
-      $("#mainNav").removeClass("mainNav-bg");
+      // $("#mainNav").removeClass("mainNav-bg");
     }
   };
   // Collapse now if page is not at top
@@ -133,6 +150,12 @@ what_page = document.getElementById("page_name").value;
     $("#user_email").val(localStorage.getItem("user_email"));
   }
 
+  // whats_this
+  let whats_this = localStorage.getItem("whats_this");
+  if (whats_this == 1 || whats_this == null){
+    $("#whats_this").addClass('show');
+    $("#whats_this_id").text($("#whats_this_id").text().replace("+", "-"));
+  }
 })(jQuery); // End of use strict
 
 function isEmail(email) {
@@ -178,7 +201,7 @@ function MaskRCNNInfer(data) {
     beforeSend: function (data) {
       $(".alert").hide();
       $("#imageUploadForm").attr("style", "display:none;");
-      $("#res_img").attr("style", "max-height:300px;");
+      $("#res_div").attr("style", "display:block;height:650px;");
       $("#res_img").attr("src", "/static/css/images/loading.gif");
     },
     success: function (data) {
@@ -273,7 +296,9 @@ function reqsSuccess(){
       window.location.href = base_url+ "/feed/" + post_id + "/";
     },
     error: function (e) {
-      pred_req_errors.push(e.responseText);
+      error_enum += 1;
+      mrcnn_error={"response":"Error occurred. Please try again later."}
+      reqsFail(e);
     }
   });
 }
@@ -290,8 +315,6 @@ function reqsFail(errors) {
   PPAlert(respText);
   $("#btnSubmit").prop("disabled", false);
   $("#res_img").attr("src", "");
-  $("#res_img").attr("style", "max-height:0px;");
+  $("#res_div").attr("style", "display:none;height:0px;");
   $("#imageUploadForm").attr("style", "display:block;");
-  // $('#top-dropzone').attr('style', 'background:url(/static/img/sample_top.png) top left no-repeat;background-size:cover;');
-  // $('#side-dropzone').attr('style', 'background:url(/static/img/sample_side.png) top left no-repeat;background-size:cover;');
 }
