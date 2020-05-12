@@ -12,6 +12,6 @@ BRANDS = ["Amazon", "eBay", "Etsy", "Overstock", "Zappos", "Wish", "Alibaba", "A
           "Kohl's", "Costco", "Target", "Asos", "Brooklinen", "BHLDN", "Cuyana", "Konga", "Jumia", "Wayfair", "Adidas",
           "Nike", "Sony", "Ulta", "H&M", "Gucci", "Kors", "Ralph Lauren", "Prada", "HugoBoss", "TommyHilfiger",
           "Levi Strauss & Co", "Burberry", "Louis Vuitton", "Forever 21", "Fashion Nova", "J.Crew", "Lacoste",
-          "Puma", "Timberland"]
+          "Puma", "Timberland", "GameStop", "Prime", "Weee"]
 MATERIALS = ['plastic', 'cardboard', 'paper', 'paperboard']
 DUMMY_NUM = 300
