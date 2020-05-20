@@ -64,7 +64,7 @@
          <div class="col-md-6">
             <div class="card">
                <h5 class="card-header">Original</h5>
-               <img class="card-img-top" src="../../media/{{ key.img_post.top_img }}" height={{ width }}>
+               <img class="card-img-top" src="{% if debug %}../../media/{{ key.img_post.top_img }}{% else %}{% static key.img_post.top_img|urlize %}{% endif %}" height={{ width }}>
                <div class="card-footer" style="color: gray;">
                   The image you posted.
                </div>
@@ -74,9 +74,9 @@
             <div class="card">
                <h5 class="card-header">Inferred</h5>
                {% if key.img_post.infer_img %}
-               <img class="card-img-top" src="../../media/{{ key.img_post.infer_img }}" height={{ width }}>
+               <img class="card-img-top" src="{% if debug %}../../media/{{ key.img_post.infer_img }}{% else %}{% static key.img_post.infer_img|urlize %}{% endif %}" height={{ width }}>
                {% else %}
-               <img class="card-img-top" src="../../media/{{ key.img_post.top_img }}" height={{ width }}>
+               <img class="card-img-top" src="{% if debug %}../../media/{{ key.img_post.top_img }}{% else %}{% static key.img_post.top_img|urlize %}{% endif %}" height={{ width }}>
                {% endif %}
                <div class="card-footer" style="color: gray;">
                   What we detected from your image.

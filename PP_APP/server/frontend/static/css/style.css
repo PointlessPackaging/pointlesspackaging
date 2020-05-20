@@ -40,7 +40,7 @@ a:focus, a:hover {
 }
 
 footer {
-  padding: 5rem 0;
+  padding: 3rem 0;
 }
 
 .btn {
@@ -85,6 +85,23 @@ background-image: linear-gradient(315deg, #29539b 0%, #2a74ff 74%);
   border-radius: 0.25rem;
 }
 
+.btn-secondary {
+  height: 1.2rem;
+  padding: 1rem;
+  letter-spacing: 0;
+  font-size: 100%;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: top;
+  display: inline-block;
+  line-height: 0;
+  background: rgb(240, 240, 240);
+  color: #5a6268;
+}
+.btn-group-mod {
+  position: relative;
+  right: 0;
+}
 /* NAVIGATION BAR */
 
 #mainNav {
@@ -213,14 +230,7 @@ background-image: linear-gradient(315deg, #29539b 0%, #2a74ff 74%);
   height: auto;
   min-height: 35rem;
   padding: 15rem 0;
-  /* background: linear-gradient(to bottom, rgba(22, 22, 22, 0.3) 0%, rgba(22, 22, 22, 0.7) 80%, #0000008a 100%), url("../img/fig.png"); */
-  /* background: linear-gradient(to bottom, rgba(22, 22, 22, 0.3) 0%, rgba(22, 22, 22, 0.7) 80%, #0000008a 100%), url("../img/bg-masthead-1-min.jpg"); */
-  /* background: url("../img/bg-masthead-1-min.jpg"); */
-  /* background-image: linear-gradient( 248.1deg,  rgba(255,200,69,1) -0.1%, rgba(48,195,158,1) 100.5% ); */
-  background-image: url(../../static/img/trees_tdr.jpg);
-  /* background-image: linear-gradient( 248.1deg,  rgb(0, 196, 65,.1) -0.1%, rgba(48,195,158,.2) 100.5% ), url("../img/bg-masthead-1-min.jpg"); */
-  /* background-image: radial-gradient( circle farthest-corner at 6.4% 9.8%,  rgba(88,242,174,1) 0%, rgba(0,130,240,1) 97.9% ); */
-  /* background-position: center; */
+  background-image: url(trees_tdr.jpg);
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;

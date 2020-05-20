@@ -2,24 +2,17 @@
 {% load static %}
 {% block content %}
 <section id="about" class="about-section bg-light">
-   <div class="container">
+   <div class="container" style="min-height:calc(75vh);">
    <div class="alert alert-danger alert-dismissible collapse" role="alert">
       <p id="status"></p>
       <button type="button" class="close" onclick="$('.alert').hide()">
          <span aria-hidden="true">&times;</span>
       </button>
    </div>
-   <!-- <h2 class="align-items-center text-center">&nbsp;</h2> -->
-   <!-- <div class="row welcome text-center">
-      <div class="col-12">
-         <h1 class="display-8 mb-4">How to get your package rated?</h1>
-      </div>
-      <hr>
-   </div> -->
    <div id="res_div" class = "row" style="display: none;height: 0px;">
       <h1 class="align-items-center text-center">&nbsp;</h1>
       <h2 class="align-items-center text-center text-black-70">Please wait...We are calculating...</h2>
-      <img src="" id="res_img" class="rounded mx-auto d-block" style="height: 300px;">
+      <img src="{% static 'css/images/loading.gif' %}" id="res_img" class="rounded mx-auto d-block" style="height: 300px;">
       <h2 class="align-items-center text-center text-black-70">Estimated time: ~20 seconds.</h2>
    </div>
    <form id="imageUploadForm" method="post" enctype="multipart/form-data">

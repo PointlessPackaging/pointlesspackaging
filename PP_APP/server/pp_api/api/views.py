@@ -8,6 +8,9 @@ from rest_framework.generics import ListAPIView
 from django.contrib.auth.models import BaseUserManager
 from django.core.validators import validate_email
 from pp_api.api.mrcnn_inference.saved_model_inference import do_prediction
+from django.core.files.base import ContentFile
+from base64 import b64decode
+from os.path import split
 
 from pp_api.models import (
     PPUsers,
@@ -64,14 +67,20 @@ def upload_imgs(request):
     upload_model = ImagePost(user_id=user_id)
     upload_serializer = UploadSerializer(upload_model,
                                          data={'top_img': request.data.get('top_img'),
-                                               'side_img': request.data.get('side_img'),
-                                               'infer_img': request.data.get('top_img')})
+                                               'side_img': request.data.get('side_img')})
     if upload_serializer.is_valid():
         ret_img_inst = upload_serializer.save()
 
         """ Call and do inference on the image using the Mask R-CNN API"""
         try:
-            prediction_area = do_prediction(upload_serializer.data.get('infer_img'))
+            """ Get the prediction """
+            ret_infer_img, prediction_area = do_prediction(upload_serializer.data.get('top_img'))
+
+            """ Save the inferred image """
+            inferred_img = b64decode(ret_infer_img)
+            _, top_img_f_name = split(ret_img_inst.top_img.name)
+            ret_img_inst.infer_img = ContentFile(inferred_img, top_img_f_name)
+            ret_img_inst.save()
         except:
             """ If inference fails, delete the uploaded image. """
             if ret_img_inst.delete():

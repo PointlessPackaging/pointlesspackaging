@@ -13,6 +13,9 @@ from pp_api.api.mrcnn_inference.visualize import display_images
 import pp_api.api.mrcnn_inference.visualize as visualize
 from django.conf import settings
 import os
+import requests
+import base64
+import re
 
 host = saved_model_config.ADDRESS
 PORT_GRPC = saved_model_config.PORT_NO_GRPC
@@ -88,17 +91,21 @@ def detect_mask_single_image_using_restapi(image):
     return result_dict
 
 def do_prediction(image_path):
-    image = cv2.imread(settings.BASE_DIR+image_path)
+    if settings.DEBUG:
+        image = cv2.imread(settings.BASE_DIR+image_path)
+    else:
+        """ Download from the storage server onto the ram """
+        resp = requests.get(image_path, stream=True).raw
+        image = np.asarray(bytearray(resp.read()), dtype="uint8")
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     if image is None:
         print("Image path is not proper")
         exit()
-
+    
     result = detect_mask_single_image_using_grpc(image)
-
     r = result
 
-    N = r['rois'].shape[0]
     class_ids = r['class']
     masks = r['mask']
 
@@ -106,13 +113,13 @@ def do_prediction(image_path):
                    'item', 'item', 'item']
 
     class_names = np.asarray(CLASS_NAMES)
-    ITEM_NAMES = CLASS_NAMES[3:]
-    # area_occupation = [masks[:, :, i].sum() for i in range(N)]
     area_occupation = masks.sum(axis=0).sum(axis=0)
 
     infer_img = visualize.display_instances(image, r['rois'], r['mask'], r['class'],
                                     CLASS_NAMES, r['scores'],
                                     title="Predictions")
-    # cv2.imwrite(settings.BASE_DIR+'/media/infer/'+img_name,cv2.cvtColor(infer_img, cv2.COLOR_BGR2RGB))
-    cv2.imwrite(settings.BASE_DIR+image_path,cv2.cvtColor(infer_img, cv2.COLOR_BGR2RGB))
-    return dict(zip(class_names[class_ids], area_occupation))
+                                    
+    infer_img = cv2.cvtColor(infer_img, cv2.COLOR_RGB2BGR)
+    _, buffer = cv2.imencode('.jpg', infer_img)
+    infer_b64_img = base64.b64encode(buffer)
+    return infer_b64_img, dict(zip(class_names[class_ids], area_occupation))
