@@ -19,8 +19,8 @@
       <meta name="twitter:description"
         content="Eliminate pointless packaging using computer vision. Help end the poor packaging practices of companies, save the environment!" />
       {% if meta_img %}
-      <meta property="twitter:image"    content="http://{{request.get_host}}/media/{{ meta_img }}" />
-      <meta property="og:image"         content="http://{{request.get_host}}/media/{{ meta_img }}" />
+      <meta property="twitter:image"    content="{% if debug %}http://{{request.get_host}}/media/{{ key.img_post.infer_img }}{% else %}{% static meta_img|urlize %}{% endif %}" />
+      <meta property="og:image"         content="{% if debug %}http://{{request.get_host}}/media/{{ key.img_post.infer_img }}{% else %}{% static meta_img|urlize %}{% endif %}" />
       {% endif %}
 
       <title> {{ title }} | Pointless Packaging</title>

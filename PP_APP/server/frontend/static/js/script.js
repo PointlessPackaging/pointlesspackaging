@@ -33,6 +33,18 @@ $(document).ready(function () {
       $("#whats_this_id").text($("#whats_this_id").text().replace("+", "-"));
     }
   });
+
+  $('#feed_search_form input[type="radio"]').on('change', function () {
+    if ($(this).val() == 'u'){
+      $("#feed_search_field").attr("placeholder", "Search by email...").focus().blur();
+      $("#feed_search_field").attr("name", "user");
+      localStorage.setItem("search_radio", 1);
+    } else {
+      $("#feed_search_field").attr("placeholder", "Search by company...").focus().blur();
+      $("#feed_search_field").attr("name", "packager");
+      localStorage.setItem("search_radio", 0);
+    }
+  });
     
     $("#btnSubmit").click(function (event) {
         
@@ -156,6 +168,20 @@ what_page = document.getElementById("page_name").value;
     $("#whats_this").addClass('show');
     $("#whats_this_id").text($("#whats_this_id").text().replace("+", "-"));
   }
+
+  let search_radio = localStorage.getItem("search_radio");
+  if (search_radio == 0 || search_radio == null) {
+    $("#feed_search_field").attr("placeholder", "Search by company...").focus().blur();
+    $("#search_c_radio").attr("checked", true);
+    $('#s_r_c_btn').prop("checked", true);
+    $("#search_c_radio").addClass("active");
+    $("#feed_search_field").attr("name", "packager");
+  } else {
+    $("#feed_search_field").attr("placeholder", "Search by email...").focus().blur();
+    $('#s_r_u_btn').prop("checked", true);
+    $("#search_u_radio").addClass("active");
+    $("#feed_search_field").attr("name", "user");
+  }
 })(jQuery); // End of use strict
 
 function isEmail(email) {
@@ -202,13 +228,11 @@ function MaskRCNNInfer(data) {
       $(".alert").hide();
       $("#imageUploadForm").attr("style", "display:none;");
       $("#res_div").attr("style", "display:block;height:650px;");
-      $("#res_img").attr("src", "/static/css/images/loading.gif");
     },
     success: function (data) {
       mrcnn_data = data;
     },
     error: function (e) {
-      // $("#status").text(JSON.parse(e.responseText).response);
       mrcnn_error = JSON.parse(e.responseText);
       error_enum += 1;
     }
@@ -314,7 +338,6 @@ function reqsFail(errors) {
   }
   PPAlert(respText);
   $("#btnSubmit").prop("disabled", false);
-  $("#res_img").attr("src", "");
   $("#res_div").attr("style", "display:none;height:0px;");
   $("#imageUploadForm").attr("style", "display:block;");
 }

@@ -12,23 +12,17 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+PRODUCTION = os.getenv('PP_PROD', None).lower()
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
-GOOGLE_APPLICATION_CREDENTIALS = 'google-vision.json'
-# MASK_RCNN_API_IP = '35.247.98.181' # M-RCNN API CLOUD
-MASK_RCNN_API_IP = '0.0.0.0' # M-RCNN RUNNING LOCAL
-MASK_RCNN_API_PORT = 8500
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'y-x48uld(-ko4z*pwe#)t$14rjn+m=1!xh#q4mxg2d32&4_-1c'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['pointlesspackaging.space']
@@ -112,13 +106,61 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+if PRODUCTION == 'true':
+    if os.getenv('MYSQL_NAME', None) is None or os.getenv('MYSQL_USER', None) is None or os.getenv('MYSQL_PASSWORD', None) is None or os.getenv('MYSQL_HOST', None) is None:
+        print("\nPlease set the valid environment variables for the MYSQL database.\n")
+        print("ENV Variables required: MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_NAME.")
+        print("\nSee documentation for more details.\n")
+        exit()
 
+    if os.getenv('STORAGE_NAME', None) is None:
+        print("\nPlease set the valid storage name.\n")
+        print("ENV Variables required: STORAGE_NAME.")
+        print("\nSee documentation for more details.\n")
+        exit()
+
+    if os.getenv('MASK_RCNN_API_IP', None) is None or os.getenv('MASK_RCNN_API_PORT', None) is None:
+        print("\nPlease set the valid Mask R-CNN API endpoint IP address, and port.\n")
+        print("ENV Variables required: MASK_RCNN_API_IP, MASK_RCNN_API_PORT.")
+        print("\n-i.e. $ export MASK_RCNN_API_IP='10.0.0.1'; export MASK_RCNN_API_PORT=8500;")
+        exit()
+
+    print('PRODUCTION MODE')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': os.getenv('MYSQL_HOST', None),
+            'USER': os.getenv('MYSQL_USER', None),
+            'PASSWORD': os.getenv('MYSQL_PASSWORD', None),
+            'NAME': os.getenv('MYSQL_NAME', None),
+        }
+    }
+
+    #https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
+    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    STATICFILES_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+    GS_BUCKET_NAME = os.getenv('STORAGE_NAME', None)
+    GS_FILE_OVERWRITE = False
+    MASK_RCNN_API_IP = os.getenv('MASK_RCNN_API_IP', None)
+    MASK_RCNN_API_PORT = os.getenv('MASK_RCNN_API_PORT', None)
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+elif PRODUCTION == 'false':
+    print('DEBUG MODE')
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+    MASK_RCNN_API_IP = '0.0.0.0' # M-RCNN RUNNING LOCAL
+    MASK_RCNN_API_PORT = 8500
+    DEBUG = True
+else:
+    print("\nPP_PROD environment variable is either invalid or not found. Please set it  true or false.")
+    print("\n-'True' runs the app in PRODUCTION mode. 'False' runs it in DEBUG mode.")
+    print("\n-i.e. $ export PP_PROD='False'")
+    exit()
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -158,10 +200,7 @@ USE_TZ = True
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "frontend/static/"),
-    MEDIA_ROOT,
 ]
-
-STATIC_ROOT = "/home/USER/static/"
 STATIC_URL = "/static/"
 
 """ DJANGO ResizedImageField """

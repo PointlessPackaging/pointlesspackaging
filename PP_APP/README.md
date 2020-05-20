@@ -1,6 +1,46 @@
 # Pointless Packaging App Documentation
 
-# Running the App:
+# Architecture:
+## Production
+![Production](Production_Architecture.png)
+## Local (Debug)
+![Local](Debug_Architecture.png)
+
+# Running the App (Production):
+0. Make sure to install `requirements.txt` in Ubuntu 18.04.
+1. Open up .bashrc and enter:
+
+```
+### BEGIN PP_APP ENV VARIABLES ###
+export PP_PROD='True'|'False'
+
+export MYSQL_HOST='YOUR MYSQL IPv4 ENDPOINT'
+export MYSQL_USER='YOUR MYSQL USERNAME'
+export MYSQL_PASSWORD='YOUR MYSQL PASSWORD'
+export MYSQL_NAME='YOUR MYSQL DATABASE NAME'
+export STORAGE_NAME='YOUR GOOGLE BUCKET STORAGE NAME'
+export MASK_RCNN_API_IP='YOUR M-RCNN IPv4 ENDPOINT'
+export MASK_RCNN_API_PORT=<PORT NUMBER>
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credential/file
+### END PP_APP ENV VARIABLES ###
+```
+
+* **If `PP_PROD` is True, then the app runs in production mode. If False, then the app runs in debug mode.**
+2. Save and exit .bashrc, then type
+	- `$ source .bashrc`
+3. Go into Django project directory via terminal and type
+	- `$ python3 manage.py collectstatic`
+4. `python manage.py migrate authtoken`
+5. `python manage.py migrate`
+    - Do not delete the migrations that is already setup in the `accounts` app before running this.
+    - This will create the superuser for you.
+    - Default Superuser info for login:
+        - `username='admin@pp.com', password='password'`
+        - You should change this information in production. 
+    - This will seed 40 of the most common brands with `score` and `count` choson at random. Also seeds `DUMMY_NUM` amount of dummy posts for testing. For more information, checkout out `server/pp_api/migrations/pp0002_initpackager_20200429_0854.py`. Some of the app configurations are in `server/meta.py`.
+6. `python manage.py runserver`
+
+# Running the App (Local):
 
 ### Starting the DJANGO app
 0. Delete any `db.sqlite3` if it exists in `server` folder.
@@ -26,20 +66,45 @@ The API should be running! But we are not yet done with the setup as we have to 
 
 There are two options. Setup the API locally or directly call the cloud model.
 #### Setting up locally (skip this if you are using the cloud API):
-1. Download the serving model from this location and unzip it anywhere:
+
+0. Download the serving model from this location and unzip it anywhere:
     - <a href="https://drive.google.com/a/ucdavis.edu/file/d/19xC4ZLuyJwEjzARPC2Ky859YrEqmf57o/view?usp=sharing" target="_blank">CLICK HERE</a>
-2. Install <a href="https://www.tensorflow.org/tfx/serving/setup" target="_blank">Tensorflow Serving (TFS)</a>
-    - For MAC users: I am not sure whether this can be done easily. Though I am pretty sure you have to use Docker to install TFS. It is a bit more complicated than in installing in Linux.
-    - For Linux users: Follow the steps outlined in the link above.
-3. Run the tensorflow model server locally so you can make RPC requests.
+    
+##### For Linux Users: 
+1. Install <a href="https://www.tensorflow.org/tfx/serving/setup" target="_blank">Tensorflow Serving (TFS)</a>
+2. Run the tensorflow model server locally so you can make RPC requests.
     - `tensorflow_model_server --port=8500 --model_name=mask --model_base_path=/absolute/path/to/model/serving_model`
+
+##### For MAC Users: 
+How to install Docker on MAC:
+https://www.youtube.com/watch?v=mbSsh40_8WM
+
+SETTING UP:
+1. Go into `serving_model` folder and copy its absolute path:
+	- Example: /home/yoosuf/Desktop/serving_model
+2. `docker run -d --name serving_base tensorflow/serving`
+3. `docker cp /home/yoosuf/Desktop/serving_model serving_base:/models/mask`
+4. `docker commit --change "ENV MODEL_NAME mask" serving_base $USER/mask_serving`
+5. `docker kill serving_base`
+6. `docker rm serving_base`
+
+STARTING AND STOPPING:
+1. Listing all containers that are on:
+	- `docker container ls`
+2. Starting the container:
+	- `docker run -d -p 8500:8500 -t $USER/mask_serving &`
+3. Stopping the container:
+	- `docker container ls`
+	- Get the container id HASH
+	- `docker container stop HASH`
+Sources: https://www.tensorflow.org/tfx/serving/serving_kubernetes
 
 #### Setting up in the cloud:
 1. Already setup. However, the servers are not always on due to cost reasons.
 
 #### Connecting Django and M-RCNN:
 1. Open up `server/settings.py`.
-2. Comment/Uncomment `MASK_RCNN_API_IP` variable for cloud or local based on your needs. Default is set to local machine.
+2. Change `MASK_RCNN_API_IP` variable for cloud or local based on your needs. Default is set to local machine - `0.0.0.0:8500`.
 
 And...you are done! In terms of setting up at least...
 
@@ -58,7 +123,7 @@ And...you are done! In terms of setting up at least...
     - What is happening behind the scenes?
         1. Email address is validated.
         2. Check if email already exists. If not, create a user.
-        3. Make an `ImagePost` model entry and store the images locally.
+        3. Make an `ImagePost` model entry and store the images.
         4. Call the Mask R-CNN API and run prediction on the `top_img`. If this fails, delete the entry.
         5. Store the results of Mask R-CNN in a `PredictedImagePost` entry.
 - `/api/update`
@@ -79,9 +144,9 @@ And...you are done! In terms of setting up at least...
         {
             "img_post": {
                 "id": 1,
-                "top_img": "http://localhost:8000/media/top/1/IMG_3.jpg",
-                "side_img": "http://localhost:8000/media/side/1/IMG_26.jpg",
-                "infer_img": "http://localhost:8000/media/infer/1/IMG_3.jpg",
+                "top_img": "top/1/IMG_3.jpg",
+                "side_img": "side/1/IMG_26.jpg",
+                "infer_img": "infer/1/IMG_3.jpg",
                 "date_posted": "2020-04-30T07:08:06.336221Z"
             },
             "packager": {
@@ -337,9 +402,9 @@ And...you are done! In terms of setting up at least...
             {
                 "img_post": {
                     "id": 1,
-                    "top_img": "http://localhost:8000/media/top/1/IMG_3.jpg",
-                    "side_img": "http://localhost:8000/media/side/1/IMG_26.jpg",
-                    "infer_img": "http://localhost:8000/media/infer/1/IMG_3.jpg",
+                    "top_img": "top/1/IMG_3.jpg",
+                    "side_img": "side/1/IMG_26.jpg",
+                    "infer_img": "infer/1/IMG_3.jpg",
                     "date_posted": "2020-04-30T07:08:06.336221Z"
                 },
                 "packager": {
@@ -355,9 +420,9 @@ And...you are done! In terms of setting up at least...
             {
                 "img_post": {
                     "id": 2,
-                    "top_img": "http://localhost:8000/media/top/1/IMG_23_r1PfAgy.jpg",
-                    "side_img": "http://localhost:8000/media/side/1/IMG_23_LqYcfPY.jpg",
-                    "infer_img": "http://localhost:8000/media/infer/1/IMG_23_f9tmg18.jpg",
+                    "top_img": "top/1/IMG_23_r1PfAgy.jpg",
+                    "side_img": "side/1/IMG_23_LqYcfPY.jpg",
+                    "infer_img": "infer/1/IMG_23_f9tmg18.jpg",
                     "date_posted": "2020-04-30T07:15:33.802592Z"
                 },
                 "packager": {

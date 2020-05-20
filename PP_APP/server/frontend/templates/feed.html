@@ -3,26 +3,40 @@
 {% block content %}
 
 <section id="feed" class="about-section bg-light">
-    <div class="container">
+    <div class="container" style="min-height:calc(75vh);">
         <!-- Search form -->
         <div class="row justify-content-center" style="padding-bottom:20px;">
-            <form class = "col-10">
+            <form id="feed_search_form" class = "col-10">
                 <div class="form-group bg-white p-3 rounded shadow has-search">
                     <div class="row align-items-center text-center">
                         <div class="col-11">
-                            <input type="search" name="packager" value="{% if packager %}{{packager}}{% endif %}" placeholder="Search by company..." class="form-control form-control-underlined" style="font-size:1.2rem;padding-left: 1rem;">
+                            <input type="search" id="feed_search_field" name="packager" value="{% if packager %}{{packager}}{% elif user_disp %}{{user_disp}}{% endif %}" placeholder="" class="form-control form-control-underlined" style="font-size:1.2rem;padding-left: 1rem;">
                         </div>
                         <button type="submit" class="border-0 col-1 btn-search">
                             <i class="fa fa-search" style=""></i>
                         </button>
                     </div>
-                    <!-- <span class="fa fa-search form-control-feedback mt-1 pull-right"></span> -->
+                    
+                    <div class="btn-group btn-group-toggle align-right text-center" data-toggle="buttons" style = "top:0.5rem;">
+                        <label class="btn btn-secondary" id="search_c_radio">
+                            <input type="radio" id="s_r_c_btn" name="options" value="c" autocomplete="off" checked> Company
+                        </label>
+                        <label class="btn btn-secondary" id="search_u_radio">
+                            <input type="radio" id="s_r_u_btn" name="options" value="u" autocomplete="off"> User
+                        </label>
+                    </div>
                 </div>
             </form>
         </div>
 
+        {% if search_success == "success" %}
         {% if packager %}
         <h1 class="align-items-center text-center">Search results for "{{packager}}"</h1>
+        <h3 class="align-items-center text-center">Seach filter: Company</h3>
+        {% elif user_disp %}
+        <h1 class="align-items-center text-center">Search results for "{{user_disp}}"</h1>
+        <h3 class="align-items-center text-center">Seach filter: User Email</h3>
+        {% endif %}
         {% else %}
         <h1 class="align-items-center text-center">See what others are posting</h1>
         {% endif %}
@@ -32,8 +46,7 @@
             <a class="infinite-item" href="/feed/{{post.img_post.id}}/" style="margin-top:10px; color:rgb(0,0,0, 0.7);padding:0px;">
                 <div class="col-sm-4">
                     <div class="card feed_item" style="width:300px; height:300px;">
-                        <div style="width:100%; height:100%;background-image:url({% if post.img_post.infer_img %}/media/{{post.img_post.infer_img}}{% else %}{% static 'img/default.jpg' %}{% endif %});background-size:cover;background-position: center;"></div>
-                        <!-- <img class="card-img-top" src="/media/{{post.img_post.infer_img}}" alt="Card image cap"> -->
+                        <div style="width:100%; height:100%;background-image:url({% if post.img_post.infer_img %}{% if debug %}/media/{{post.img_post.infer_img}}{% else %}{% static post.img_post.infer_img|urlize %}{% endif %}{% else %}{% static 'img/default.jpg' %}{% endif %});background-size:cover;background-position: center;"></div>
                         <div class="card-block">
                             <h5 class="card-title align-items-center text-center">{{post.packager.brand_name}}, Score: {{post.score|floatformat}}/10</h5>
                         </div>
@@ -44,13 +57,15 @@
         </div>
         {% if page_obj.has_next %}
         {% if packager %}
-            <a class="infinite-more-link" href="?packager={{packager}}&page={{ page_obj.next_page_number }}"></a>
+            <a class="infinite-more-link" href="?options=c&packager={{packager}}&page={{ page_obj.next_page_number }}"></a>
+        {% elif user_disp %}
+            <a class="infinite-more-link" href="?options=u&user={{user_disp}}&page={{ page_obj.next_page_number }}"></a>
         {% else %}
             <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
         {% endif %}
         {% endif %}
         <div class="d-flex justify-content-center" style="display:none;">
-            <div class="spinner-border" role="status">
+            <div class="spinner-border" style="display: none;" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
@@ -62,7 +77,7 @@
     var infinite = new Waypoint.Infinite({
         element: $('.infinite-container')[0],
         handler: function (direction) {
-
+            
         },
         offset: 'bottom-in-view',
 
@@ -73,6 +88,6 @@
             $('.spinner-border').hide();
         }
 
-    });    
+    });
 </script>
 {% endblock content %}
