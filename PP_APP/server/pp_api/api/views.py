@@ -187,18 +187,26 @@ def update_img_post(request):
         return Response({'response': 'Unable to save data. Post' + del_str}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# DELETE IMAGE POST
+def update_packagers():
+    # Update submissions count of all Packager
+    packagers = Packager.objects.all()
+    for pkg in packagers:
+        pkg.count = PredictedImagePost.objects.filter(packager=pkg).count()
+        pkg.save()
+
+
 @api_view(['DELETE'])
 @permission_classes((IsAuthenticated,))
 def delete_post(request):
     try:
-        img_post_model = ImagePost.objects.get(pk=request.data.get('post_id'))
-    except img_post_model.DoesNotExist:
+        img_post = ImagePost.objects.get(pk=request.data.get('post_id'))
+    except img_post.DoesNotExist:
         return Response({'response': 'invalid post.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    operation = img_post_model.delete()
+    operation = img_post.delete()
     data = {}
     if operation:
+        update_packagers()
         data['response'] = "post was deleted successfully."
         return Response(data, status=status.HTTP_200_OK)
     data['response'] = "failed to delete post."
@@ -232,7 +240,7 @@ def top_five_worst_view(request):
     try:
         packager = Packager.objects.order_by('score')[:5]
     except Packager.DoesNotExist:
-        return Response({"response": "Cannot retreive top 5 worst packagers."})
+        return Response({"response": "Cannot retrieve top 5 worst packagers."})
 
     if request.method == "GET":
         serializer = DisplayPackagerSerializer(packager, many=True)
@@ -296,6 +304,27 @@ class search_user_posts_view(ListAPIView):
     pagination_class = PageNumberPagination
 
 
+# @api_view(['GET'])
+# @permission_classes(())
+# def clear_scores_view(request):
+#     """
+#     /api/worst_five
+#     Displays the top five worst ranked companies.
+#     """
+#     try:
+#         packagers = Packager.objects.all()
+#     except packagers.DoesNotExist:
+#         return Response({"response": "Cannot retrieve packagers."})
+#
+#     for packager in packagers:
+#         packager.score = 0
+#         packager.count = 0
+#         packager.save()
+#     if request.method == "GET":
+#         serializer = PackagerSerializer(packagers, many=True)
+#         return Response(serializer.data)
+
+
 class TableData(APIView):
     authentication_classes = []
     permission_classes = []
@@ -331,6 +360,7 @@ class ChartData(APIView):
 
     @staticmethod
     def get_packagers():
+        update_packagers() # TODO: This could be remove if delete properly
         brand_names, brand_count = [], []
         packagers = Packager.objects.all().order_by('-score')[:PACKAGERS_NUM]
         for pkg in packagers:
@@ -341,7 +371,7 @@ class ChartData(APIView):
     @staticmethod
     def get_months():
         months_count = []
-        for i in range(len(MONTHS)):
+        for i in range(1, len(MONTHS), 1):
             months_count.append(ImagePost.objects.filter(date_posted__month=i).count())
         return months_count
 

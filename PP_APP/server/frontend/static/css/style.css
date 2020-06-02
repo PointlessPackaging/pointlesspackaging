@@ -24,7 +24,7 @@ a:focus, a:hover {
 
 .bg-black {
   /* background-color: #009c34 !important; */
-  background-image: linear-gradient( 248.1deg,  rgb(0, 196, 65,1) -0.1%, rgba(48,195,158,1) 100.5% );
+  background-image: linear-gradient(248.1deg,  rgb(0, 196, 65,1) -0.1%, rgba(48,195,158,1) 100.5% );
 }
 
 .bg-black-rev {
