@@ -3,7 +3,7 @@ from django.views.generic.list import ListView
 from pp_api.models import ImagePost, PredictedImagePost, Packager, PPUsers
 from django.conf import settings
 
-# Create your views here.
+
 def home_view(request):
     return render(request, 'home.html', {'title': 'Home', 'page_name': 'home'})
 
@@ -24,44 +24,46 @@ class FeedView(ListView):
         usr_query = self.request.GET.get('user')
         options = self.request.GET.get('options')
         if options == 'c' and query:
-            bad_chars = [';', ':', '!', '*', '?'] 
-            query=''.join(i for i in query if not i in bad_chars)
+            bad_chars = [';', ':', '!', '*', '?']
+            query = ''.join(i for i in query if not i in bad_chars)
             query = query.strip().replace(" ", "").lower()
-            object_list = self.model.objects.filter(packager__name__istartswith=query).order_by('-img_post__date_posted')
-            print('\n\n\nQUERY---',query)
+            object_list = self.model.objects.filter(packager__name__istartswith=query).order_by(
+                '-img_post__date_posted')
+            print('\n\n\nQUERY---', query)
         elif options == 'u' and usr_query:
-            bad_chars = [';', ':', '!', '*', '?'] 
-            usr_query=''.join(i for i in usr_query if not i in bad_chars)
+            bad_chars = [';', ':', '!', '*', '?']
+            usr_query = ''.join(i for i in usr_query if not i in bad_chars)
             usr_query = usr_query.strip().replace(" ", "").lower()
-            object_list = self.model.objects.filter(img_post__user_id__email=usr_query).order_by('-img_post__date_posted')            
+            object_list = self.model.objects.filter(img_post__user_id__email=usr_query).order_by(
+                '-img_post__date_posted')
         else:
             object_list = self.model.objects.all().order_by('-img_post__date_posted')
         return object_list
 
-    def get_context_data(self,**kwargs):
-        context = super(FeedView,self).get_context_data(**kwargs)
-        query=self.request.GET.get('packager')
+    def get_context_data(self, **kwargs):
+        context = super(FeedView, self).get_context_data(**kwargs)
+        query = self.request.GET.get('packager')
         usr_query = self.request.GET.get('user')
         options = self.request.GET.get('options')
 
         if options == 'c' and query:
-            bad_chars = [';', ':', '!', '*', '?',''] 
-            query=''.join(i for i in query if not i in bad_chars)
-            context['packager']=str(query)
-            context['search_success']='success'
+            bad_chars = [';', ':', '!', '*', '?', '']
+            query = ''.join(i for i in query if not i in bad_chars)
+            context['packager'] = str(query)
+            context['search_success'] = 'success'
         elif options == 'u' and usr_query:
-            bad_chars = [';', ':', '!', '*', '?',''] 
-            usr_query=''.join(i for i in usr_query if not i in bad_chars)
-            context['user_disp']=str(usr_query)
-            context['search_success']='success'
+            bad_chars = [';', ':', '!', '*', '?', '']
+            usr_query = ''.join(i for i in usr_query if not i in bad_chars)
+            context['user_disp'] = str(usr_query)
+            context['search_success'] = 'success'
         else:
-            context['packager']=None
-            context['search_success']=None
-        context['title']='Feed'
-        context['page_name']='feed'
-        context['debug']=settings.DEBUG
+            context['packager'] = None
+            context['search_success'] = None
+        context['title'] = 'Feed'
+        context['page_name'] = 'feed'
+        context['debug'] = settings.DEBUG
         return context
-    
+
 
 def ranking_view(request):
     return render(request, 'ranking.html', {'title': 'Ranking', 'page_name': 'ranking'})
@@ -94,10 +96,14 @@ def post_view(request, post_id):
         'page_name': 'post',
         'pp_post': pp_post,
         'meta_img': pp_post[0].img_post.infer_img,
-        'debug':settings.DEBUG,
+        'debug': settings.DEBUG,
     }
     return render(request, 'post.html', context)
 
 
 def not_found_404(request, exception):
     return render(request, 'not_found_404.html', {'title': 'Not found...'})
+
+
+def feedback_view(request):
+    return render(request, 'feedback.html', {'title': 'Feedback'})

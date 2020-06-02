@@ -29,7 +29,29 @@
             </li>
          </ul>
       </div>
+      <div class="row">
+         <ul class="navbar-nav ml-auto">
+            <li class="nav-item ml-auto">
+               <a class="nav-link ml-auto" href="/feedback">
+                  <h5 style="margin-top: 0.3rem; margin-bottom: -0.5rem; text-decoration: underline;">Give us your feedback</h5>
+               </a>
+            </li>
+         </ul>
+      </div>
+      <div class="row">
+      </div>
       <h1>POST #{{ key.img_post.id }}</h1>
+      <div class="row">
+         <a id = "hows_grade_id" class="text-black-100 black-par" data-toggle="collapse" href="#hows_grade" role="button" aria-expanded="false"
+            aria-controls="hows_grade" style="text-indent: 1em;">
+            + How do we grade?
+         </a>
+         <div id="hows_grade" class="collapse">
+            <div class="custom_card card-body">
+               <img class="card-img-top" src="{% static 'img/score_formula.png' %}">
+            </div>
+         </div>
+      </div>
       <div class="row">
          <div class="col-md-4">
             <div class="card mb-3 bg-transparent" style="font-size: 80px; text-align: center;">
@@ -51,7 +73,11 @@
                </tr>
                <tr>
                   <th>Space Used by Item</th>
+                  {% if key.item_size <= key.inner_size %}
                   <td>{{ key.item_size|div:key.inner_size|mul:100|stringformat:".1f" }}%</td>
+                  {% else %}
+                  <td>Not Available</td>
+                  {% endif %}
                </tr>
                <tr>
                   <th>Date</th>
@@ -97,28 +123,28 @@
    </div>
 </section>
 <script>
-$(function(){
-   try {
-      let parse_txt = JSON.parse($("#mat_val").val());
-      let f_arr = [];
-      let f_txt = "";
-      if (parse_txt.has_plastic) {
-         f_arr.push("plastic");
+   $(function(){
+      try {
+         let parse_txt = JSON.parse($("#mat_val").val());
+         let f_arr = [];
+         let f_txt = "";
+         if (parse_txt.has_plastic) {
+            f_arr.push("plastic");
+         }
+         if (parse_txt.has_cardboard || parse_txt.has_paperboard) {
+            f_arr.push("cardboard");
+         }
+         if (parse_txt.has_paper) {
+            f_arr.push("paper");
+         }
+         let i = 0;
+         for (i = 0; i < f_arr.length - 1; i++) {
+            f_txt.concat(f_arr[i] + ",")
+         }
+         $("#material_key").text(f_arr.toString());
+      } catch (e){
+         $("#material_key").text($("#mat_val").val());
       }
-      if (parse_txt.has_cardboard || parse_txt.has_paperboard) {
-         f_arr.push("cardboard");
-      }
-      if (parse_txt.has_paper) {
-         f_arr.push("paper");
-      }
-      let i = 0;
-      for (i = 0; i < f_arr.length - 1; i++) {
-         f_txt.concat(f_arr[i] + ",")
-      }
-      $("#material_key").text(f_arr.toString());
-   } catch (e){
-      $("#material_key").text($("#mat_val").val());
-   }
-});
+   });
 </script>
 {% endblock content %}

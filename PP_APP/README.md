@@ -55,7 +55,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/credential/file
     - This will seed 40 of the most common brands with `score` and `count` choson at random. Also seeds `DUMMY_NUM` amount of dummy posts for testing. For more information, checkout out `server/pp_api/migrations/pp0002_initpackager_20200429_0854.py`. Some of the app configurations are in `server/meta.py`.
 4. `python manage.py runserver`
 
-5. (For MAC users only) Port-In-Used Error for Mac
+5. (For MAC users only) Port-In-Used Error
     - `sudo lsof -t -i tcp:8000 | xargs kill -9`
 
 If you have already made the migrations, skip step 2 and 3.
