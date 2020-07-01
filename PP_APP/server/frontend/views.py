@@ -106,4 +106,4 @@ def not_found_404(request, exception):
 
 
 def feedback_view(request):
-    return render(request, 'feedback.html', {'title': 'Feedback'})
+    return render(request, 'feedback.html', {'title': 'Feedback', 'page_name': 'feedback'})
